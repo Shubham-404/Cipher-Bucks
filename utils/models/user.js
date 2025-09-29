@@ -1,12 +1,12 @@
 // models/user.js
 const mongoose = require("mongoose");
-const hisaabSchema = require("./hisaab"); // ✅ import schema, not model
+const hisaabSchema = require("./hisaab");
 
 const userSchema = mongoose.Schema({
     username: String,
     password: String,
     name: String,
-    hisaabs: [hisaabSchema] // ✅ correct: use schema here
+    hisaabs: [hisaabSchema] 
 });
 
 module.exports = mongoose.model("User", userSchema);

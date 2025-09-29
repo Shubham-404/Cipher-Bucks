@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+
+*{
+    transition: .3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.input-valid{
+    /* border: 1px solid red; */
+    margin-top: .5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    height: 4rem;
+}

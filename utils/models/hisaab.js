@@ -10,5 +10,4 @@ const hisaabSchema = mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
-// ✅ Export only the schema
 module.exports = hisaabSchema;

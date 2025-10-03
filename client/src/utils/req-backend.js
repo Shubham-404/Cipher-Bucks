@@ -1,4 +1,3 @@
-import axios from 'axios';
 export const MakePostRequest = async (route, data) => {
     console.log(data);
     try {

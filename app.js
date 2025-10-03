@@ -1,11 +1,13 @@
 const path = require('path')
 const express = require('express');
+const cookieParser = require('cookie-parser')
 const cors = require('cors')
 
 const app = express();
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 const corsOptions = {
     origin: 'http://localhost:5173',
@@ -13,17 +15,24 @@ const corsOptions = {
     credentials: true,
 };
 app.use(cors(corsOptions))
-// app.options('*', cors(corsOptions));
 
-const indexRouter = require('./routes/index-router')
+const { connectToDB } = require("./config/connect-to-db");
+connectToDB();
+
 const userRouter = require('./routes/user-router')
 const testRouter = require('./routes/test-router')
-const verifyRouter = require('./routes/verify-router')
 
-app.use('/', indexRouter)
 app.use('/test1', testRouter)
-app.use('/user', userRouter)
-app.use('/verify', verifyRouter)
+app.use('/user', userRouter) // verify User here....
+
+
+// all other routes
+app.get(/^.*/, (req, res) => {
+    res.status(404).send("404 Page Not Found!")
+})
+app.post(/^.*/, (req, res) => {
+    res.status(404).send("404 Page Not Found!")
+})
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {

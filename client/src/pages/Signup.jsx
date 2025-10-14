@@ -2,12 +2,14 @@ import { useForm } from 'react-hook-form';
 import SidePanel from '../components/SidePanel';
 
 
-export default function Login() {
+export default function Login({ targetAction }) {
   document.title = "KhataBook • Signup"
 
   const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = (data) => {
     console.log(data);
+    //actual API call for submitting the data.
+
   }
   let pass = '';
   // const passwordRegEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
@@ -16,7 +18,7 @@ export default function Login() {
   return (
     <div className="bg-indigo-500 grid grid-cols-1 md:grid-cols-2 h-[90svh]">
       {/* Left branding */}
-      <SidePanel page="Signup"/>
+      <SidePanel page="Signup" />
 
       {/* Right form */}
       <div className="flex items-center justify-center rounded-t-4xl bg-no-repeat bg-[length:auto_50%] bg-bottom bg-[url('/images/undraw_quiet-street.png')] bg-white">
@@ -97,7 +99,7 @@ export default function Login() {
               type="submit"
               className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 mt-4 rounded-xl shadow-md cursor-pointer transition-all"
             >
-              Login
+              Register
             </button>
           </form>
         </div>

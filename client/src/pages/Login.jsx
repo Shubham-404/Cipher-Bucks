@@ -3,7 +3,7 @@ import SidePanel from '../components/SidePanel';
 import { MakeGetRequest } from '../utils/req-backend';
 
 
-export default function Login() {
+export default function Login({formTarget}) {
   document.title = "KhataBook • Login"
 
   const { register, handleSubmit, formState: { errors } } = useForm();

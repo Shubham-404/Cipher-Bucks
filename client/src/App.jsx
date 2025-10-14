@@ -10,14 +10,15 @@ import Layout from './Layout'
 import Test from './pages/Test'
 
 const App = () => {
+  const formTarget = "http://localhost:3000";
   return (
     // <RouterProvider>
     <Router>
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/signup' element={<Signup />} />
+          <Route path='/login' element={<Login formTarget/>} />
+          <Route path='/signup' element={<Signup formTarget/>} />
           <Route path='/add-hisaab' element={<AddHisaab />} />
           <Route path='/edit-hisaab' element={<EditHisaab />} />
           <Route path='/test' element={<Test />} />

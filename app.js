@@ -23,7 +23,7 @@ const userRouter = require('./routes/user-router')
 const testRouter = require('./routes/test-router')
 
 app.use('/test1', testRouter)
-app.use('/user', userRouter) // verify User here....
+app.use('/api/user', userRouter) // verify User here....
 
 
 // all other routes

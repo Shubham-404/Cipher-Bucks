@@ -54,6 +54,13 @@ export default function Login({formTarget}) {
             >
               Login
             </button>
+
+            <button
+              type=""
+              className="w-full bg-gray-400 hover:bg-gray-600 text-white font-semibold py-2 px-4 mt-4 rounded-xl shadow-md cursor-pointer transition-all flex justify-center items-center gap-3"
+            >
+              Login with <img className='h-5 rounded-full' src="https://e7.pngegg.com/pngimages/337/722/png-clipart-google-search-google-account-google-s-google-play-google-company-text-thumbnail.png" alt="google" />
+            </button>
           </form>
         </div>
       </div>

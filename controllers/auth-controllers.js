@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 
+const sendEmailToUser = require('../utils/services/send-email')
+
 const userModel = require('../utils/models/user')
 const getToken = require('../utils/services/get-token')
 
@@ -11,7 +13,7 @@ module.exports.signupUser = async function (req, res) {
         let user = await userModel.findOne({ email });
         if (user) {
             console.log('User already exists.');
-            return res.send("User already exists. Kindly login.");
+            return res.json({ "message": "User already exists. Kindly login." });
         }
 
         // create new user
@@ -31,8 +33,23 @@ module.exports.signupUser = async function (req, res) {
             secure: true,
             maxAge: 24 * 60 * 60 * 1000 // one day
         })
-        console.log("Cookie is set.")
+        console.log("Login Sucess!")
 
+
+        // Send welcome mail to new user
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: email,
+            subject: `Welcome to Cipher Bucks!`,
+            text: `As per your request, your account has been successfull created with the email ${email}. 
+            Let us know about your experience and suggestions (if any) at help.cipherbucks.com.
+
+            Regards,
+            Team Cipher Bucks.`
+        }
+        let  mailRespnse = await sendEmailToUser(mailOptions);
+        console.log(mailRespnse.message);
+ 
         res.status(201).send(user);
     }
     catch (err) {
@@ -77,7 +94,7 @@ module.exports.loginUser = async function (req, res) {
 // user profile
 module.exports.userProfile = function (req, res) {
     let { name, email, hisaabs } = req.user;
-    res.json({name, email, hisaabs});
+    res.json({ name, email, hisaabs });
 }
 
 // logout

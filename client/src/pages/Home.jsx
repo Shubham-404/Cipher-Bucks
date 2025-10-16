@@ -14,13 +14,13 @@ export default function Home() {
         <div className="flex justify-center items-center min-h-[85vh] px-6">
           <div className="w-full max-w-4xl bg-white dark:bg-gray-700 bg-no-repeat bg-[length:auto_65%] bg-top bg-[url('/images/undraw_quiet-street.png')] dark:bg-blend-color-burn shadow-xl rounded-t-3xl p-10 text-center space-y-8">
             <h1 className="text-transparent font-black bg-clip-text bg-gradient-to-r from-indigo-900 via-indigo-300 to-indigo-900 text-4xl md:text-6xl">
-              KhataBook
+              Cipher Bucks
             </h1>
             <p className="text-xl justify-self-center w-72 font-medium text-gray-600 dark:text-white">
               A simple, secure ledger system by <a className="text-red-400 font-bold" target='_blank' href='https://github.com/Shubham-404'>Shubham-404 &#x2197;</a>
             </p>
             <p className="text-gray-600 dark:text-white text-md max-w-2xl mx-auto">
-              KhataBook lets you manage multiple hisaabs with optional passcode protection and a delightful UI
+              Cipher Bucks lets you manage multiple hisaabs with optional passcode protection and a delightful UI
               experience.
             </p>
             <Link

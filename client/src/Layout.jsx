@@ -19,7 +19,6 @@ const Layout = ({ title }) => {
             })
     })
 
-
     return (
         <div className="parent h-full w-full dark:text-white bg-gradient-to-b from-indigo-500 via-indigo-500 to-white dark:to-gray-700">
             {/* Loading Screen */}
@@ -28,7 +27,7 @@ const Layout = ({ title }) => {
                 className="fixed h-full w-full inset-0 z-50 bg-indigo-500 flex items-center justify-center"
             >
                 <h1 className="text-transparent bg-clip-text bg-white text-6xl md:text-8xl font-extrabold">
-                    Khata Book.
+                    Cipher Bucks.
                 </h1>
             </div>
             <Header />

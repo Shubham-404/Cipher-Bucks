@@ -4,6 +4,7 @@ const sendEmailToUser = require('../utils/services/send-email')
 
 const userModel = require('../utils/models/user')
 const getToken = require('../utils/services/get-token')
+const getOTP = require('../utils/services/get-otp')
 
 
 // signup
@@ -107,3 +108,10 @@ module.exports.logoutUser = function (req, res) {
 
     res.status(201).send("Logged Out.");
 }
+
+
+module.exports.verifyOTP = async function(req, res){
+    const OTP = getOTP();
+
+}
+ 

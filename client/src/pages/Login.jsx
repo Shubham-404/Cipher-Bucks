@@ -5,6 +5,8 @@ import InputField from '../components/InputField';
 import Button from '../components/Button';
 import Loader from '../components/Loader';
 import ThemeSwitcher from '../components/ThemeSwitcher';
+import SidePanel from '../components/SidePanel';
+
 
 export default function Login() {
   document.title = "Cipher Bucks • Login";
@@ -42,26 +44,14 @@ export default function Login() {
   return (
     <div className="min-h-screen flex relative">
       {loading && <Loader />}
-      
+
       {/* Theme Switcher - Fixed top right */}
       <div className="fixed top-4 right-4 z-50">
         <ThemeSwitcher />
       </div>
 
       {/* Left Panel */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#5A5AFB] to-blue-400 items-center justify-center p-12">
-        <div className="text-white text-center">
-          <Link to="/" className="inline-block mb-8 hover:scale-105 transition-transform">
-            <div className="flex items-center justify-center space-x-3">
-              <span className="text-5xl">🚀</span>
-              <span className="text-4xl font-bold">Cipher Bucks</span>
-            </div>
-          </Link>
-          <h1 className="text-3xl font-bold mb-4">Welcome Back!</h1>
-          <p className="text-xl mb-8">Your digital ledger — secure, simple, encrypted.</p>
-          <p className="text-lg text-blue-100">By Shubham-404</p>
-        </div>
-      </div>
+      <SidePanel message="Welcome Back!" text="Your digital ledger — secure, simple, encrypted."/>
 
       {/* Right Panel - Login Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-gray-50 dark:bg-gray-900">
@@ -107,12 +97,15 @@ export default function Login() {
             <Button type="submit" variant="primary" className="w-full mb-4">
               Login
             </Button>
+            <div className='flex justify-center items-center gap-5'>
+              <Button type="button" variant="secondary" className="!p-0 overflow-hidden flex items-center justify-center self-center justify-self-center space-x-2 text-xs border border-gray-300 !rounded-full ">
+                <span><img className='h-9' src="/images/google-logo.png" alt="Login with Google" /></span>
+              </Button>
 
-            <Button type="button" variant="secondary" className="w-full flex items-center justify-center space-x-2">
-              <span>Login with</span>
-              <span>🔍</span>
-              <span>Google</span>
-            </Button>
+              <Button type="button" variant="secondary" className="!p-0 overflow-hidden flex items-center justify-center self-center justify-self-center space-x-2 text-xs border border-gray-300 !rounded-full shadow-md">
+                <span><img className='h-9 bg-white' src="/images/github-logo.png" alt="Login with GitHub" /></span>
+              </Button>
+            </div>
           </form>
 
           <p className="text-center text-gray-600 dark:text-gray-400 mt-6">

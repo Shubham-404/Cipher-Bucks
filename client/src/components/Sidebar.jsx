@@ -31,11 +31,10 @@ export default function Sidebar() {
             <Link
               key={item.path}
               to={item.path}
-              className={`flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all ${
-                location.pathname === item.path
+              className={`flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all ${location.pathname === item.path
                   ? 'bg-indigo-600 text-white shadow-md'
                   : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:translate-x-1'
-              }`}
+                }`}
             >
               <span className="text-xl">{item.icon}</span>
               <span>{item.label}</span>

@@ -6,7 +6,6 @@ import Navbar from '../components/Navbar';
 export default function Home() {
   document.title = "Cipher Bucks • Home";
   const heroRef = useRef(null);
-  const featuresRef = useRef(null);
 
   useEffect(() => {
     gsap.fromTo(
@@ -14,83 +13,54 @@ export default function Home() {
       { opacity: 0, y: 30 },
       { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
     );
-
-    gsap.fromTo(
-      featuresRef.current.children,
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 0.8, stagger: 0.2, delay: 0.3, ease: 'power3.out' }
-    );
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="relative min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#5A5AFB] to-blue-400 py-20" ref={heroRef}>
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="text-6xl font-bold text-white mb-4">
+      {/* Main Content */}
+      <div id="main-content" className="flex justify-center items-center min-h-[85vh]">
+        <div
+          className="w-full max-w-4xl bg-white dark:bg-gray-700 bg-no-repeat bg-[length:auto_65%] bg-top bg-[url('/images/background.png')] dark:bg-blend-color-burn shadow-2xl rounded-3xl p-10 my-5 text-center space-y-8"
+          ref={heroRef}
+        >
+          <h1 className="text-transparent font-black bg-clip-text bg-gradient-to-r from-indigo-700  via-indigo-400 to-indigo-700 text-4xl md:text-6xl">
             Cipher Bucks
           </h1>
-          <p className="text-2xl text-white mb-2">A simple, secure ledger system</p>
-          <p className="text-lg text-blue-100 mb-8">
-            by <a href="https://github.com/Shubham-404" target="_blank" rel="noopener noreferrer" className="underline hover:text-white">Shubham-404</a> 🔗
+          <p className="text-xl justify-self-center w-75 font-medium text-gray-600 dark:text-white">
+            A simple, secure ledger system by <a className="text-red-400 font-bold" target='_blank' href='https://github.com/Shubham-404'>Shubham-404</a>
           </p>
-          
-          <p className="text-xl text-white mb-12 max-w-2xl mx-auto">
-            Cipher Bucks lets you manage multiple hisaabs with optional passcode protection and a delightful UI experience.
+          <p className="text-gray-600 dark:text-white w-90 text-md max-w-2xl mx-auto">
+            Cipher Bucks lets you manage multiple hisaabs with optional passcode protection and a delightful UI
+            experience.
           </p>
-
-          <Link to="/login">
-            <button className="bg-[#FF4C4C] hover:bg-red-600 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
-              Start Logging Now 🚀
-            </button>
+          <Link
+            to="/login"
+            className="inline-block px-7 py-3 bg-red-500 hover:bg-red-600 text-white rounded-full text-md font-semibold shadow-lg transition-all"
+          >
+            Start Logging Now 🚀
           </Link>
-        </div>
-      </section>
 
-      {/* Features Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" ref={featuresRef}>
-            {/* Feature 1 */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
-              <div className="text-4xl mb-4">📓</div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Multiple Hisaabs</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Easily manage separate transaction books under your account.
-              </p>
-            </div>
-
-            {/* Feature 2 */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
-              <div className="text-4xl mb-4">🔐</div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Encrypted Safety</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Add passcode protection to sensitive records — unlock only when needed.
-              </p>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
-              <div className="text-4xl mb-4">🧠</div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Intuitive UX</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Smooth interactions, responsive design, and intelligent show/hide logic.
-              </p>
-            </div>
-
-            {/* Feature 4 */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
-              <div className="text-4xl mb-4">❤️</div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Built with ❤️</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Crafted by a dev exploring the full-stack journey — Node.js, MongoDB, EJS.
-              </p>
-            </div>
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8 text-left">
+            {[
+              ['🧾 Multiple Hisaabs', 'Easily manage separate transaction books under your account.'],
+              ['🔐 Encrypted Safety', 'Add passcode protection to sensitive records — unlock only when needed.'],
+              ['🧠 Intuitive UX', 'Smooth interactions, responsive design, and intelligent show/hide logic.'],
+              ['👨‍💻 Built with ❤️', 'Crafted by a dev exploring the full-stack journey — Node.js, MongoDB, EJS.']
+            ].map(([title, desc]) => (
+              <div
+                key={title}
+                className="bg-indigo-50/20 backdrop-blur-2xl p-6 rounded-xl shadow-inner hover:shadow-lg transition"
+              >
+                <h2 className="text-xl font-semibold text-indigo-700 dark:text-indigo-300 mb-2">{title}</h2>
+                <p className="text-gray-600 dark:text-gray-200 text-sm">{desc}</p>
+              </div>
+            ))}
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

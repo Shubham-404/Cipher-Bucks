@@ -6,24 +6,30 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-sm">
-      <div className="container mx-auto px-6 py-4">
+    <nav className="sticky top-0 z-40 bg-linear-to-r from-indigo-600/90 to-indigo-500/80 backdrop-blur-md shadow-md rounded-b-lg">
+      <div className="container mx-auto px-6 py-1">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 text-2xl font-bold text-indigo-600 dark:text-indigo-400 hover:scale-105 transition-transform">
-            <span>🚀</span>
-            <span>Cipher Bucks</span>
+          <Link to="/" className="flex items-center space-x-2 text-2xl font-bold text-gray-100 dark:text-indigo-100 hover:scale-105 transition-transform">
+            <span className='flex justify-center items-center font-semibold text-sm'>
+
+              <img className='h-15 rounded-full' src="/images/logo-no-bg.png" alt="Cipher Bucks Logo" />
+              <h2 className='flex flex-col justify-center items-start gap-0'>
+                <span>Cipher</span>
+                <span>Bucks</span>
+              </h2>
+            </span>
           </Link>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            <Link to="/contact" className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">
+            <Link to="/contact" className="text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">
               Contact
             </Link>
-            <Link to="/login" className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">
+            <Link to="/login" className="px-4 py-2 text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">
               Login
             </Link>
-            <Link to="/signup" className="bg-[#FF4C4C] hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all">
+            <Link to="/signup" className="bg-[#FF4C4C] hover:bg-red-600 text-white px-4 py-1 rounded-sm font-semibold shadow-md hover:shadow-lg transition-all">
               Sign Up
             </Link>
             <ThemeSwitcher />

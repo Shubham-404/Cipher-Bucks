@@ -16,10 +16,10 @@ export default function Contact() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="bg-gray-50 dark:bg-gray-900">
       <Navbar />
 
-      <div className="container mx-auto px-6 py-20">
+      <div className="container mx-auto px-6 py-10">
         <div ref={cardRef} className="max-w-2xl mx-auto">
           <Card>
             <div className="text-center mb-8">

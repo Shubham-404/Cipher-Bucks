@@ -5,6 +5,7 @@ import InputField from '../components/InputField';
 import Button from '../components/Button';
 import Loader from '../components/Loader';
 import ThemeSwitcher from '../components/ThemeSwitcher';
+import SidePanel from '../components/SidePanel';
 
 export default function Signup() {
   document.title = "Cipher Bucks • Signup";
@@ -52,26 +53,14 @@ export default function Signup() {
   return (
     <div className="min-h-screen flex relative">
       {loading && <Loader />}
-      
+
       {/* Theme Switcher - Fixed top right */}
       <div className="fixed top-4 right-4 z-50">
         <ThemeSwitcher />
       </div>
 
       {/* Left Panel */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#5A5AFB] to-blue-400 items-center justify-center p-12">
-        <div className="text-white text-center">
-          <Link to="/" className="inline-block mb-8 hover:scale-105 transition-transform">
-            <div className="flex items-center justify-center space-x-3">
-              <span className="text-5xl">🚀</span>
-              <span className="text-4xl font-bold">Cipher Bucks</span>
-            </div>
-          </Link>
-          <h1 className="text-3xl font-bold mb-4">Join Cipher Bucks</h1>
-          <p className="text-xl mb-8">Start managing your finances securely today.</p>
-          <p className="text-lg text-blue-100">Simple • Secure • Encrypted</p>
-        </div>
-      </div>
+      <SidePanel message="Join Cipher Bucks" text="Start managing your finances securely today." />
 
       {/* Right Panel - Signup Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-gray-50 dark:bg-gray-900">
@@ -108,23 +97,25 @@ export default function Signup() {
               placeholder="Enter your email"
             />
 
-            <InputField
-              label="Password"
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Create a password"
-            />
+            <div className='flex gap-5 justify-center items-center'>
+              <InputField
+                label="Password"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Create a password"
+              />
 
-            <InputField
-              label="Confirm Password"
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="Confirm your password"
-            />
+              <InputField
+                label="Confirm Password"
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm your password"
+              />
+            </div>
 
             <Button type="submit" variant="primary" className="w-full mt-4">
               Sign Up

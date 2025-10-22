@@ -5,6 +5,7 @@ import InputField from '../components/InputField';
 import Button from '../components/Button';
 import Loader from '../components/Loader';
 import ThemeSwitcher from '../components/ThemeSwitcher';
+import SidePanel from '../components/SidePanel';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -32,15 +33,18 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#5A5AFB] to-blue-400 p-6 relative">
+    <div className="min-h-screen w-full flex items-center justify-center dark:bg-gray-700 bg-[url(/images/background.png)] bg-cover bg-no-repeat bg-bottom bg-blend-color-burn relative">
       {loading && <Loader />}
-      
+
       {/* Theme Switcher */}
       <div className="fixed top-4 right-4 z-50">
         <ThemeSwitcher />
       </div>
 
-      <div ref={cardRef} className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
+      {/* <div className='flex'> */}
+      {/* <SidePanel /> */}
+
+      <div ref={cardRef} className="w-full max-w-md bg-white dark:bg-gray-800 shadow-sm rounded-2xl p-8">
         <div className="text-center mb-8">
           <div className="text-5xl mb-4">🔑</div>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -73,5 +77,6 @@ export default function ForgotPassword() {
         </div>
       </div>
     </div>
+    // </div>
   );
 }

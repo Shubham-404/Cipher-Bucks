@@ -1,0 +1,112 @@
+import { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { gsap } from 'gsap';
+import InputField from '../components/InputField';
+import Button from '../components/Button';
+import Loader from '../components/Loader';
+import ThemeSwitcher from '../components/ThemeSwitcher';
+
+export default function ResetPassword() {
+  const [formData, setFormData] = useState({
+    otp: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const cardRef = useRef(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    gsap.fromTo(
+      cardRef.current,
+      { opacity: 0, scale: 0.9 },
+      { opacity: 1, scale: 1, duration: 0.6, ease: 'power3.out' }
+    );
+  }, []);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (formData.newPassword !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    setLoading(true);
+
+    // TODO: Replace with actual API call
+    setTimeout(() => {
+      setLoading(false);
+      navigate('/login');
+    }, 1500);
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#5A5AFB] to-blue-400 p-6 relative">
+      {loading && <Loader />}
+      
+      {/* Theme Switcher */}
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeSwitcher />
+      </div>
+
+      <div ref={cardRef} className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
+        <div className="text-center mb-8">
+          <div className="text-5xl mb-4">🔒</div>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            Reset Password
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            Enter the OTP sent to your email and create a new password
+          </p>
+        </div>
+
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          <InputField
+            label="OTP Code"
+            type="text"
+            name="otp"
+            value={formData.otp}
+            onChange={handleChange}
+            placeholder="Enter 6-digit OTP"
+            maxLength="6"
+          />
+
+          <InputField
+            label="New Password"
+            type="password"
+            name="newPassword"
+            value={formData.newPassword}
+            onChange={handleChange}
+            placeholder="Enter new password"
+          />
+
+          <InputField
+            label="Confirm Password"
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            placeholder="Confirm new password"
+          />
+
+          <Button type="submit" variant="primary" className="w-full mt-4">
+            Reset Password
+          </Button>
+        </form>
+      </div>
+    </div>
+  );
+}

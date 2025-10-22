@@ -1,32 +1,67 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route, RouterProvider } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
-import EditHisaab from './pages/EditHisaab'
-import AddHisaab from './pages/AddHisaab'
-import NotFound from './pages/NotFound'
-import Layout from './Layout'
-import Test from './pages/Test'
+import Contact from './pages/Contact'
+import VerifyEmail from './pages/VerifyEmail'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
+import Dashboard from './pages/Dashboard'
+import Hisabs from './pages/Hisabs'
+import Encrypted from './pages/Encrypted'
+import Settings from './pages/Settings'
+import ProtectedRoute from './components/ProtectedRoute'
 
 const App = () => {
-  const formTarget = "http://localhost:3000";
   return (
-    // <RouterProvider>
     <Router>
       <Routes>
-        <Route path='/' element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path='/login' element={<Login formTarget/>} />
-          <Route path='/signup' element={<Signup formTarget/>} />
-          <Route path='/add-hisaab' element={<AddHisaab />} />
-          <Route path='/edit-hisaab' element={<EditHisaab />} />
-          <Route path='/test' element={<Test />} />
-          <Route path='*' element={<NotFound />} />
-        </Route>
+        {/* Public Routes */}
+        <Route path='/' element={<Home />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/contact' element={<Contact />} />
+        <Route path='/verify-email' element={<VerifyEmail />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
+        <Route path='/reset-password' element={<ResetPassword />} />
+
+        {/* Protected Routes */}
+        <Route path='/dashboard' element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+        <Route path='/hisabs' element={
+          <ProtectedRoute>
+            <Hisabs />
+          </ProtectedRoute>
+        } />
+        <Route path='/encrypted' element={
+          <ProtectedRoute>
+            <Encrypted />
+          </ProtectedRoute>
+        } />
+        <Route path='/settings' element={
+          <ProtectedRoute>
+            <Settings />
+          </ProtectedRoute>
+        } />
+
+        {/* 404 Route */}
+        <Route path='*' element={
+          <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+            <div className="text-center">
+              <h1 className="text-6xl font-bold text-gray-900 dark:text-white mb-4">404</h1>
+              <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">Page not found</p>
+              <a href="/" className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                Go Home
+              </a>
+            </div>
+          </div>
+        } />
       </Routes>
     </Router>
-    // </RouterProvider>
   )
 }
 

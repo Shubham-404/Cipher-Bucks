@@ -1,67 +1,126 @@
-import { useForm } from 'react-hook-form';
-import SidePanel from '../components/SidePanel';
-import { MakeGetRequest } from '../utils/req-backend';
+import { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { gsap } from 'gsap';
+import InputField from '../components/InputField';
+import Button from '../components/Button';
+import Loader from '../components/Loader';
+import ThemeSwitcher from '../components/ThemeSwitcher';
 
+export default function Login() {
+  document.title = "Cipher Bucks • Login";
+  const [formData, setFormData] = useState({ username: '', password: '' });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const cardRef = useRef(null);
 
-export default function Login({formTarget}) {
-  document.title = "KhataBook • Login"
+  useEffect(() => {
+    gsap.fromTo(
+      cardRef.current,
+      { opacity: 0, scale: 0.9 },
+      { opacity: 1, scale: 1, duration: 0.6, ease: 'power3.out' }
+    );
+  }, []);
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = (data) => {
-    console.log(data);
-  }
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    // TODO: Replace with actual API call
+    setTimeout(() => {
+      localStorage.setItem('isAuthenticated', 'true');
+      setLoading(false);
+      navigate('/dashboard');
+    }, 1500);
+  };
 
   return (
-    <div className="bg-indigo-500 grid grid-cols-1 md:grid-cols-2 h-[90svh]">
-      {/* Left branding */}
-      <SidePanel page="Login" />
+    <div className="min-h-screen flex relative">
+      {loading && <Loader />}
+      
+      {/* Theme Switcher - Fixed top right */}
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeSwitcher />
+      </div>
 
-      {/* Right form */}
-      <div className="flex items-center justify-center rounded-t-4xl bg-no-repeat bg-[length:auto_50%] bg-bottom bg-[url('/images/undraw_quiet-street.png')] bg-white">
-        <div className="flex justify-center items-center min-h-[60vh] px-4">
-          <form
-
-            onSubmit={handleSubmit(onSubmit)}
-            className="w-xs p-8 bg-white rounded-xl shadow-md shadow-gray-400 flex flex-col"
-          >
-            <h1 className="text-2xl font-semibold text-gray-700 text-center">Login 🔐</h1>
-            <div className="input-valid">
-
-              <input
-                {...register('username', { required: "Username is required." })}
-                type="text"
-                autoComplete="auto"
-                placeholder="Username*"
-                className="w-full px-4 py-2 mt-4 bg-gray-50 inset-shadow-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-gray-700"
-              />
-              {errors.username && <span className='text-red-500 text-sm'>{errors.username.message}</span>}
+      {/* Left Panel */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#5A5AFB] to-blue-400 items-center justify-center p-12">
+        <div className="text-white text-center">
+          <Link to="/" className="inline-block mb-8 hover:scale-105 transition-transform">
+            <div className="flex items-center justify-center space-x-3">
+              <span className="text-5xl">🚀</span>
+              <span className="text-4xl font-bold">Cipher Bucks</span>
             </div>
-            <div className="input-valid">
-              <input
-                {...register('password', {
-                  required: 'password can\'t be empty.'
-                })}
-                type="password"
-                placeholder="Password*"
-                className="w-full px-4 py-2 mt-4 bg-gray-50 inset-shadow-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-gray-700"
-              />
-              {errors.password && <span className='text-red-500 text-sm'>{errors.password.message}</span>}
+          </Link>
+          <h1 className="text-3xl font-bold mb-4">Welcome Back!</h1>
+          <p className="text-xl mb-8">Your digital ledger — secure, simple, encrypted.</p>
+          <p className="text-lg text-blue-100">By Shubham-404</p>
+        </div>
+      </div>
+
+      {/* Right Panel - Login Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-gray-50 dark:bg-gray-900">
+        <div ref={cardRef} className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
+            Login 🔐
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 text-center mb-8">
+            Welcome back! Please enter your details.
+          </p>
+
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit}>
+            <InputField
+              label="Username"
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder="Enter your username"
+            />
+
+            <InputField
+              label="Password"
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Enter your password"
+            />
+
+            <div className="flex justify-end mb-6">
+              <Link to="/forgot-password" className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
+                Forgot password?
+              </Link>
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 mt-4 rounded-xl shadow-md cursor-pointer transition-all"
-            >
+            <Button type="submit" variant="primary" className="w-full mb-4">
               Login
-            </button>
+            </Button>
 
-            <button
-              type=""
-              className="w-full bg-gray-400 hover:bg-gray-600 text-white font-semibold py-2 px-4 mt-4 rounded-xl shadow-md cursor-pointer transition-all flex justify-center items-center gap-3"
-            >
-              Login with <img className='h-5 rounded-full' src="https://e7.pngegg.com/pngimages/337/722/png-clipart-google-search-google-account-google-s-google-play-google-company-text-thumbnail.png" alt="google" />
-            </button>
+            <Button type="button" variant="secondary" className="w-full flex items-center justify-center space-x-2">
+              <span>Login with</span>
+              <span>🔍</span>
+              <span>Google</span>
+            </Button>
           </form>
+
+          <p className="text-center text-gray-600 dark:text-gray-400 mt-6">
+            Don't have an account?{' '}
+            <Link to="/signup" className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">
+              Sign Up
+            </Link>
+          </p>
         </div>
       </div>
     </div>

@@ -5,9 +5,10 @@ const cors = require('cors')
 
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(express.json()); // to work with json responses and requests.
+app.use(express.urlencoded({ extended: true })); // to encode the data from body in post request
+app.use(express.static(path.join(__dirname, 'public'))); // to serve static files from public dir
+app.use(cookieParser()); // to work with cookeis
 
 const corsOptions = {
     origin: 'http://localhost:5173',

@@ -4,7 +4,7 @@ const sendEmailToUser = require('../utils/services/send-email')
 
 const userModel = require('../utils/models/user')
 const getToken = require('../utils/services/get-token')
-const getOTP = require('../utils/services/get-otp')
+const getOtp = require('../utils/services/get-otp')
 
 
 // signup
@@ -14,7 +14,7 @@ module.exports.signupUser = async function (req, res) {
         let user = await userModel.findOne({ email });
         if (user) {
             console.log('User already exists.');
-            return res.json({ "message": "User already exists. Kindly login." });
+            return res.json({ success: false, message: "User already exists. Kindly login." });
         }
 
         // create new user
@@ -42,15 +42,85 @@ module.exports.signupUser = async function (req, res) {
             from: process.env.SENDER_EMAIL,
             to: email,
             subject: `Welcome to Cipher Bucks!`,
-            text: `As per your request, your account has been successfull created with the email ${email}. 
-            Let us know about your experience and suggestions (if any) at help.cipherbucks.com.
+            html: `
+        <html>
+            <head>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #f4f7fa;
+                        color: #333;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .container {
+                        max-width: 600px;
+                        margin: 0 auto;
+                        background-color: #ffffff;
+                        padding: 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    }
+                    .header {
+                        text-align: center;
+                        margin-bottom: 20px;
+                    }
+                    .header img {
+                        max-width: 150px;
+                    }
+                    h2 {
+                        color: #4CAF50;
+                    }
+                    p {
+                        line-height: 1.6;
+                    }
+                    .footer {
+                        text-align: center;
+                        margin-top: 30px;
+                        font-size: 12px;
+                        color: #777;
+                    }
+                    .footer a {
+                        color: #4CAF50;
+                        text-decoration: none;
+                    }
+                    .cta-button {
+                        background-color: #4CAF50;
+                        color: white;
+                        padding: 12px 25px;
+                        text-align: center;
+                        font-size: 16px;
+                        border-radius: 5px;
+                        text-decoration: none;
+                        display: inline-block;
+                        margin-top: 20px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <img src="/images/logo-long.png" alt="Cipher Bucks">
+                    </div>
 
-            Regards,
-            Team Cipher Bucks.`
-        }
-        let  mailRespnse = await sendEmailToUser(mailOptions);
+                    <h2>Welcome, ${name}!</h2>
+                    <p>We’re thrilled to have you on board! Your account has been successfully created with the email <strong>${email}</strong>.</p>
+                    <p>We’re here to help you make the most of your experience with Cipher Bucks. If you have any suggestions or need assistance, don’t hesitate to reach out to us at <a href="mailto:help@cipherbucks.shubham.app">help@cipherbucks.shubham.app</a>.</p>
+
+                    <p>We hope you enjoy the journey with us!</p>
+
+                    <div class="footer">
+                        <p>Warm regards,<br>Team Cipher Bucks</p>
+                    </div>
+                </div>
+            </body>
+        </html>
+    `
+        };
+
+        let mailRespnse = await sendEmailToUser(mailOptions);
         console.log(mailRespnse.message);
- 
+
         res.status(201).send(user);
     }
     catch (err) {
@@ -95,7 +165,7 @@ module.exports.loginUser = async function (req, res) {
 // user profile
 module.exports.userProfile = function (req, res) {
     let { name, email, hisaabs } = req.user;
-    res.json({ name, email, hisaabs });
+    res.json({ success: true, name, email, hisaabs });
 }
 
 // logout
@@ -110,8 +180,127 @@ module.exports.logoutUser = function (req, res) {
 }
 
 
-module.exports.verifyOTP = async function(req, res){
-    const OTP = getOTP();
+module.exports.sendVerifyOtp = async function (req, res) {
+    try {
+        //check if the user is already verified.
+        const user = await userModel.findOne(email);
+        if (user.isAccountVerified) return res.json({ success: false, message: "User already verified." })
 
+
+        const OTP = getOtp();
+        //update otp and expire time in database
+        user.verifyOtp = OTP;
+        user.verifyOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
+        await user.save();
+
+        // Send otp via mail to the user
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: user.email,
+            subject: `OTP for Email Verification`,
+            html: `
+        <html>
+            <head>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #f4f7fa;
+                        color: #333;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .container {
+                        max-width: 600px;
+                        margin: 0 auto;
+                        background-color: #ffffff;
+                        padding: 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    }
+                    .header {
+                        text-align: center;
+                        margin-bottom: 20px;
+                    }
+                    .header img {
+                        max-width: 150px;
+                    }
+                    h2 {
+                        color: #4CAF50;
+                    }
+                    .otp-code {
+                        display: inline-block;
+                        background-color: #4CAF50;
+                        color: white;
+                        padding: 10px 20px;
+                        font-size: 18px;
+                        font-weight: bold;
+                        border-radius: 5px;
+                        margin-top: 20px;
+                    }
+                    p {
+                        line-height: 1.6;
+                    }
+                    .footer {
+                        text-align: center;
+                        margin-top: 30px;
+                        font-size: 12px;
+                        color: #777;
+                    }
+                    .footer a {
+                        color: #4CAF50;
+                        text-decoration: none;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <img src="../../client/public/images/logo.png" alt="Cipher Bucks">
+                    </div>
+
+                    <h2>Hi ${user.name || 'there'}!</h2>
+                    <p>We have received a request to create an account using the email <strong>${user.email}</strong>.</p>
+                    <p>Your One-Time Password (OTP) for verifying your email address is:</p>
+
+                    <div class="otp-code">
+                        ${OTP}
+                    </div>
+
+                    <p>Please enter this code on the verification page to complete your registration process.</p>
+
+                    <p>If you did not request this, we recommend updating your password and logging out of other devices immediately.</p>
+
+                    <p>For any assistance or suggestions, feel free to reach us at <a href="mailto:help@cipherbucks.shubham.app">help@cipherbucks.shubham.app</a>.</p>
+
+                    <div class="footer">
+                        <p>Regards,<br>Team Cipher Bucks</p>
+                    </div>
+                </div>
+            </body>
+        </html>
+    `
+        };
+
+        let mailRespnse = await sendEmailToUser(mailOptions);
+        console.log(mailRespnse.message);
+        res.json({ success: true, message: "Verification OTP sent on email." });
+
+    } catch (err) {
+        console.error(err)
+        res.json({ success: false, message: "Unable send OTP verification email. Please try again." })
+    }
 }
- 
+
+
+module.exports.verifyEmail = async function (req, res) {
+    const { email, OTP } = req.body;
+    if (!user || !OTP) {
+        res.json({ success: false, message: "Missing Details." })
+    }
+    try {
+        const user = await userModel.findOne({ email });
+        
+    } catch (err) {
+        res.json({ success: false, message: err })
+    }
+}

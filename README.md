@@ -1,7 +1,7 @@
 # 📘 Cipher Bucks
  – Personal Ledger App
 
-Inspired by the original Cipher Bucks
+Inspired by the original KhataBook
  this is a full-stack ledger management app built for learning, portfolio, and showcasing real-world backend practices.
 
 ![Cipher Bucks

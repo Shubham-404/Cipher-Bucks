@@ -1,11 +1,12 @@
 # 📘 Cipher Bucks
- – Personal Ledger App
+
+## [Live Demo here](https://cipher-bucks.netlify.app)
+– Personal Ledger App
 
 Inspired by the original KhataBook
- this is a full-stack ledger management app built for learning, portfolio, and showcasing real-world backend practices.
+this is a full-stack ledger management app built for learning, portfolio, and showcasing real-world backend practices.
 
-![Cipher Bucks
-](./client/public/images/demo.png)
+![Cipher Bucks](./client/public/images/demo.png)
 
 ## 🚀 Features
 
@@ -27,15 +28,16 @@ Inspired by the original KhataBook
 - **Security:** Input validation & clean data handling
 
 ## 📁 Project Structure
+
 Cipher Bucks
-  
+
 ├── models/ # Mongoose Schemas  
 ├── public/ # Static assets (CSS, JS, images)  
 ├── routes/ # Express route handlers  
 ├── views/ # EJS templates  
 ├── .env # Environment variables  
 ├── app.js # Main app entry  
-└── package.json  
+└── package.json
 
 ## 🔧 Setup Instructions
 
@@ -44,20 +46,27 @@ Cipher Bucks
    git clone https://github.com/Shubham-404/Cipher Bucks
    git
    cd Cipher Bucks
-   
+
+   ```
 2. **Install dependencies**
+
    ```bash
    npm install
+
+   ```
 
 3. **Configure environment**
    Create a .env file:
    ```bash
    MONGO_URI=your_mongo_connection_string
-   
+
+   ```
 4. **Run the server**
    ```bash
     npm run dev
-   
+
+   ```
 5. **Open the app**
    ```bash
    http://localhost:3000
+   ```

@@ -28,7 +28,7 @@ module.exports.signupUser = async function (req, res) {
         })
         console.log("user Created.")
         // now login the user by saving jwt token
-        let token = getToken({ email })
+        let token = getToken({ id: user._id })
         res.cookie('cipherBucksToken', token, {
             httpOnly: true,
             secure: true,
@@ -144,7 +144,7 @@ module.exports.loginUser = async function (req, res) {
         }
 
         // now login the user by saving jwt token
-        let token = getToken( {user} )
+        let token = getToken({ id: user._id })
         res.cookie('cipherBucksToken', token, {
             httpOnly: true,
             secure: true,
@@ -155,17 +155,25 @@ module.exports.loginUser = async function (req, res) {
 
         res.status(200).json({ success: true, message: "Logged in Successfully." });
     }
-    catch {
-        console.log("Cannot get user data!");
-        res.status(400).json({ success: false, message: "Process Failure, please go back!" })
+    catch(error) {
+        console.error("login error:", error.message);
+        res.status(500).json({ success: false, message: "Process Failure, please go back!", error: error.message })
     }
 }
 
 
 // user profile
-module.exports.userProfile = function (req, res) {
-    let { name, email, hisaabs } = req.body.userId;
-    res.json({ success: true, name, email, hisaabs });
+module.exports.userProfile = async function (req, res) {
+    try {
+        const user = await userModel.findById(req.body.userId);
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found." });
+        }
+        const { name, email, hisaabs } = user;
+        res.json({ success: true, name, email, hisaabs });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
 }
 
 // logout
@@ -184,8 +192,11 @@ module.exports.sendVerifyOtp = async function (req, res) {
     try {
         //check if the user is already verified.
         const { userId } = req.body
-        const user = await userModel.findOne({ userId });
-        console.log(user)
+        const user = await userModel.findOne({ _id: userId });
+        // console.log(user)
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found." });
+        }
         if (user.isAccountVerified)
             return res.json({ success: false, message: "User already verified." })
 
@@ -194,12 +205,12 @@ module.exports.sendVerifyOtp = async function (req, res) {
         //update otp and expire time in database
         user.verifyOtp = OTP;
         user.verifyOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
-        await user.save(); 
+        await user.save();
 
         // Send otp via mail to the user
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
-            to: req.userId,
+            to: user.email,
             subject: `OTP for Email Verification`,
             html: `
         <html>
@@ -298,15 +309,15 @@ module.exports.sendVerifyOtp = async function (req, res) {
 module.exports.verifyEmail = async function (req, res) {
     try {
         const { userId, enteredOtp } = req.body;
-        const user = await userModel.findOne({ userId });
+        const user = await userModel.findOne({ _id: userId });
         if (!user || !enteredOtp) {
-            res.json({ success: false, message: "Missing Details." })
+            return res.json({ success: false, message: "Missing Details." })
         }
         if (user.verifyOtp === '' || enteredOtp !== user.verifyOtp) {
-            res.json({ success: false, message: "OTP invalid!" })
+            return res.json({ success: false, message: "OTP invalid!" })
         }
         if (user.verifyOtpExpireAt < Date.now()) {
-            res.json({ success: false, message: "OTP expired!" })
+            return res.json({ success: false, message: "OTP expired!" })
         }
         user.isAccountVerified = true;
         user.verifyOtp = '';

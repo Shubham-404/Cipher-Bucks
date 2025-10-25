@@ -14,7 +14,7 @@ module.exports.signupUser = async function (req, res) {
         let user = await userModel.findOne({ email });
         if (user) {
             console.log('User already exists.');
-            return res.json({ success: false, message: "User already exists. Kindly login." });
+            return res.status(409).json({ success: false, message: "User already exists. Kindly login." });
         }
 
         // create new user
@@ -29,7 +29,7 @@ module.exports.signupUser = async function (req, res) {
         console.log("user Created.")
         // now login the user by saving jwt token
         let token = getToken({ email })
-        res.cookie('khataToken', token, {
+        res.cookie('cipherBucksToken', token, {
             httpOnly: true,
             secure: true,
             maxAge: 24 * 60 * 60 * 1000 // one day
@@ -123,9 +123,9 @@ module.exports.signupUser = async function (req, res) {
 
         res.status(201).json({ success: true, message: "Account created successfully. Please verify your email to proceed." });
     }
-    catch (err) {
-        console.log("Here is the err: ", err.message);
-        res.status(500).json({ success: false, message: "Process Failure, please go back!" })
+    catch (error) {
+        console.error("Here is the err: ", error.message);
+        res.status(500).json({ success: false, message: "Process Failure, please go back!", error: error.message })
     }
 }
 
@@ -136,16 +136,16 @@ module.exports.loginUser = async function (req, res) {
         const { email, password } = req.body;
         let user = await userModel.findOne({ email });
         if (!user) {
-            return res.status(500).json({ success: false, message: "Invalid email or password." })
+            return res.status(400).json({ success: false, message: "Invalid email or password." })
         }
         let result = await bcrypt.compare(password, user.password);
         if (!result) {
-            return res.status(500).json({ success: false, message: "Invalid email or password." })
+            return res.status(401).json({ success: false, message: "Invalid email or password." })
         }
 
         // now login the user by saving jwt token
-        let token = getToken({ email })
-        res.cookie('khataToken', token, {
+        let token = getToken( {user} )
+        res.cookie('cipherBucksToken', token, {
             httpOnly: true,
             secure: true,
             maxAge: 24 * 60 * 60 * 1000 // one day
@@ -153,51 +153,53 @@ module.exports.loginUser = async function (req, res) {
         console.log("Cookie is set.")
         console.log("Logged In.")
 
-        res.status(201).json({ success: true, message: "Logged in Successfully." });
+        res.status(200).json({ success: true, message: "Logged in Successfully." });
     }
     catch {
         console.log("Cannot get user data!");
-        res.json({ success: false, message: "Process Failure, please go back!" })
+        res.status(400).json({ success: false, message: "Process Failure, please go back!" })
     }
 }
 
 
 // user profile
 module.exports.userProfile = function (req, res) {
-    let { name, email, hisaabs } = req.user;
+    let { name, email, hisaabs } = req.body.userId;
     res.json({ success: true, name, email, hisaabs });
 }
 
 // logout
 module.exports.logoutUser = function (req, res) {
-    res.cookie('khataToken', '', {
+    res.cookie('cipherBucksToken', '', {
         httpOnly: true,
         secure: true,
     })
     console.log("Cookie is reset.")
 
-    res.status(201).json({ success: true, message: "Logged Out." });
+    res.status(200).json({ success: true, message: "Logged Out." });
 }
 
 
 module.exports.sendVerifyOtp = async function (req, res) {
     try {
         //check if the user is already verified.
-        const {userId} = req.body
+        const { userId } = req.body
         const user = await userModel.findOne({ userId });
-        if (user.isAccountVerified) return res.json({ success: false, message: "User already verified." })
+        console.log(user)
+        if (user.isAccountVerified)
+            return res.json({ success: false, message: "User already verified." })
 
 
         const OTP = getOtp();
         //update otp and expire time in database
         user.verifyOtp = OTP;
         user.verifyOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
-        await user.save();
+        await user.save(); 
 
         // Send otp via mail to the user
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
-            to: user.email,
+            to: req.userId,
             subject: `OTP for Email Verification`,
             html: `
         <html>
@@ -283,12 +285,12 @@ module.exports.sendVerifyOtp = async function (req, res) {
         };
 
         let mailRespnse = await sendEmailToUser(mailOptions);
-        console.log(mailRespnse.message, "OTP");
+        console.log(mailRespnse.message + "-> OTP");
         res.json({ success: true, message: "Verification OTP sent on email." });
 
-    } catch (err) {
-        console.error(err)
-        res.json({ success: false, message: "Unable send OTP verification email. Please try again.", error: err })
+    } catch (error) {
+        console.error(error)
+        res.json({ success: false, message: "Unable to send OTP verification email. Please try again.", error: error.message })
     }
 }
 
@@ -312,7 +314,7 @@ module.exports.verifyEmail = async function (req, res) {
         await user.save();
         return res.json({ success: true, message: "Email verified successfully." })
 
-    } catch (err) {
-        res.json({ success: false, message: err })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
     }
 }

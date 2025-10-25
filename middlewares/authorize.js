@@ -1,18 +1,21 @@
 const jwt = require('jsonwebtoken');
-const userModel = require('../utils/models/user')
 
 module.exports.authorize = async (req, res, next) => {
-    if (req.cookies.khataToken) {
+    if (req.cookies.cipherBucksToken) {
         try {
-            const data = await jwt.verify(req.cookies.khataToken, process.env.JWT_SECRET);
-            req.user = await userModel.findOne({ email: data.email }).select('-password'); // do not save password
-            if(!req.user) throw new Error("Cannot fetch user data.");
-            // console.log("Authorized with middleware.")
+            const tokenData = await jwt.verify(req.cookies.cipherBucksToken, process.env.JWT_SECRET);
+            console.log(tokenData)
+            if (tokenData) {
+                req.body.userId = tokenData.id
+            } else {
+                return res.json({ success: false, message: "Not Authorize. Login again." });
+            }
             next();
-        } catch (err) {
-            res.status(401).send("Something went wrong!")
+
+        } catch (error) {
+            res.status(401).json({ success: false, message: "Something went wrong!", error: error.message })
         }
     } else {
-        res.send("Not Authorized.")
+        return res.json({ success: false, message: "Not Authorized, login again." })
     }
 }

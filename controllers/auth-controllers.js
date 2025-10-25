@@ -66,7 +66,7 @@ module.exports.signupUser = async function (req, res) {
                         margin-bottom: 20px;
                     }
                     .header img {
-                        max-width: 150px;
+                        max-width: 180px;
                     }
                     h2 {
                         color: #4CAF50;
@@ -100,7 +100,7 @@ module.exports.signupUser = async function (req, res) {
             <body>
                 <div class="container">
                     <div class="header">
-                        <img src="/images/logo-long.png" alt="Cipher Bucks">
+                        <a href='https://postimages.org/' target='_blank'><img src='https://i.postimg.cc/D0xKtM2f/logo-long.png' border='0' alt='logo-long'/></a>
                     </div>
 
                     <h2>Welcome, ${name}!</h2>
@@ -121,11 +121,11 @@ module.exports.signupUser = async function (req, res) {
         let mailRespnse = await sendEmailToUser(mailOptions);
         console.log(mailRespnse.message);
 
-        res.status(201).send(user);
+        res.status(201).json({ success: true, message: "Account created successfully. Please verify your email to proceed." });
     }
     catch (err) {
         console.log("Here is the err: ", err.message);
-        res.status(500).send("Process Failure, please go back!")
+        res.status(500).json({ success: false, message: "Process Failure, please go back!" })
     }
 }
 
@@ -136,11 +136,11 @@ module.exports.loginUser = async function (req, res) {
         const { email, password } = req.body;
         let user = await userModel.findOne({ email });
         if (!user) {
-            return res.status(500).send("Invalid email or password.")
+            return res.status(500).json({ success: false, message: "Invalid email or password." })
         }
         let result = await bcrypt.compare(password, user.password);
         if (!result) {
-            return res.status(500).send("Invalid email or password.")
+            return res.status(500).json({ success: false, message: "Invalid email or password." })
         }
 
         // now login the user by saving jwt token
@@ -153,11 +153,11 @@ module.exports.loginUser = async function (req, res) {
         console.log("Cookie is set.")
         console.log("Logged In.")
 
-        res.status(201).send("Logged in Successfully.");
+        res.status(201).json({ success: true, message: "Logged in Successfully." });
     }
     catch {
         console.log("Cannot get user data!");
-        res.send("Process Failure, please go back!")
+        res.json({ success: false, message: "Process Failure, please go back!" })
     }
 }
 
@@ -176,14 +176,15 @@ module.exports.logoutUser = function (req, res) {
     })
     console.log("Cookie is reset.")
 
-    res.status(201).send("Logged Out.");
+    res.status(201).json({ success: true, message: "Logged Out." });
 }
 
 
 module.exports.sendVerifyOtp = async function (req, res) {
     try {
         //check if the user is already verified.
-        const user = await userModel.findOne(email);
+        const email = req.body.email
+        const user = await userModel.findOne({ email });
         if (user.isAccountVerified) return res.json({ success: false, message: "User already verified." })
 
 
@@ -224,7 +225,7 @@ module.exports.sendVerifyOtp = async function (req, res) {
                     .header img {
                         max-width: 150px;
                     }
-                    h2 {
+                    h2 { 
                         color: #4CAF50;
                     }
                     .otp-code {
@@ -255,7 +256,7 @@ module.exports.sendVerifyOtp = async function (req, res) {
             <body>
                 <div class="container">
                     <div class="header">
-                        <img src="../../client/public/images/logo.png" alt="Cipher Bucks">
+                        <a href='https://postimages.org/' target='_blank'><img src='https://i.postimg.cc/D0xKtM2f/logo-long.png' border='0' alt='logo-long'/></a>
                     </div>
 
                     <h2>Hi ${user.name || 'there'}!</h2>
@@ -287,7 +288,7 @@ module.exports.sendVerifyOtp = async function (req, res) {
 
     } catch (err) {
         console.error(err)
-        res.json({ success: false, message: "Unable send OTP verification email. Please try again." })
+        res.json({ success: false, message: "Unable send OTP verification email. Please try again.", error: err })
     }
 }
 
@@ -299,7 +300,7 @@ module.exports.verifyEmail = async function (req, res) {
     }
     try {
         const user = await userModel.findOne({ email });
-        
+
     } catch (err) {
         res.json({ success: false, message: err })
     }

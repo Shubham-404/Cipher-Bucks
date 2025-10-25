@@ -5,7 +5,7 @@ Inspired by the original KhataBook
  this is a full-stack ledger management app built for learning, portfolio, and showcasing real-world backend practices.
 
 ![Cipher Bucks
-](./public/images/demo.png)
+](./client/public/images/demo.png)
 
 ## 🚀 Features
 

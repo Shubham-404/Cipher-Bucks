@@ -155,7 +155,7 @@ module.exports.loginUser = async function (req, res) {
 
         res.status(200).json({ success: true, message: "Logged in Successfully." });
     }
-    catch(error) {
+    catch (error) {
         console.error("login error:", error.message);
         res.status(500).json({ success: false, message: "Process Failure, please go back!", error: error.message })
     }
@@ -165,7 +165,7 @@ module.exports.loginUser = async function (req, res) {
 // user profile
 module.exports.userProfile = async function (req, res) {
     try {
-        const user = await userModel.findById(req.body.userId);
+        const user = await userModel.findById(req.user.id);
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found." });
         }
@@ -188,10 +188,21 @@ module.exports.logoutUser = function (req, res) {
 }
 
 
+module.exports.deleteUser = async function (req, res) {
+    try {
+        const user = await userModel.deleteOne({ _id: req.user.id });
+        console.log(user)
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Something went wrong. Please try again.", error: error.message })
+    }
+
+}
+
+
 module.exports.sendVerifyOtp = async function (req, res) {
     try {
         //check if the user is already verified.
-        const { userId } = req.body
+        const userId = req.user.id
         const user = await userModel.findOne({ _id: userId });
         // console.log(user)
         if (!user) {
@@ -308,7 +319,8 @@ module.exports.sendVerifyOtp = async function (req, res) {
 
 module.exports.verifyEmail = async function (req, res) {
     try {
-        const { userId, enteredOtp } = req.body;
+        const { enteredOtp } = req.body;
+        const userId = req.user.id;
         const user = await userModel.findOne({ _id: userId });
         if (!user || !enteredOtp) {
             return res.json({ success: false, message: "Missing Details." })
@@ -323,9 +335,15 @@ module.exports.verifyEmail = async function (req, res) {
         user.verifyOtp = '';
         user.verifyOtpExpireAt = 0;
         await user.save();
+
         return res.json({ success: true, message: "Email verified successfully." })
 
     } catch (error) {
         res.json({ success: false, message: error.message })
     }
+}
+
+
+module.exports.resetPassword = async function (req, res) {
+
 }

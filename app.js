@@ -21,10 +21,13 @@ const { connectToDB } = require("./config/connect-to-db");
 connectToDB();
 
 const userRouter = require('./routes/user-router')
-const testRouter = require('./routes/test-router')
+const testRouter = require('./routes/test-router');
+const hisabRouter = require('./routes/hisab-router');
 
 app.use('/test1', testRouter)
 app.use('/api/user', userRouter) // verify User here....
+app.use('/api/user', userRouter) // User related here....
+app.use('/hisab', hisabRouter) // Hisaab related here....
 
 
 // all other routes

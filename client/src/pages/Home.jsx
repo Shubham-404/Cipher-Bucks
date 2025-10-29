@@ -17,7 +17,7 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Navbar />
+      {/* <Navbar /> */}
 
       {/* Main Content */}
       <div id="main-content" className="flex justify-center items-center min-h-[85vh]">

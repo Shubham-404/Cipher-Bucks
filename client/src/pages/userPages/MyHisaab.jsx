@@ -8,7 +8,7 @@ export default function MyHisaab({ name = 'User', username = 'user', hisaabs = [
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-indigo-500 to-blue-400 dark:from-gray-900 dark:via-indigo-900 dark:to-gray-800">
-      <DashboardNavbar />
+      {/* <DashboardNavbar /> */}
 
       <div className="container mx-auto px-6 py-8">
         {/* Welcome Section */}

@@ -17,7 +17,7 @@ export default function Contact() {
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900">
-      <Navbar />
+      {/* <Navbar /> */}
 
       <div className="container mx-auto px-6 py-10">
         <div ref={cardRef} className="max-w-2xl mx-auto">

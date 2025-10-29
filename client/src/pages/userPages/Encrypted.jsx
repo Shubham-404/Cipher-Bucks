@@ -67,7 +67,7 @@ export default function Encrypted() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-indigo-500 to-blue-400 dark:from-gray-900 dark:via-indigo-900 dark:to-gray-800">
       {loading && <Loader />}
-      <DashboardNavbar />
+      {/* <DashboardNavbar /> */}
 
       <div className="container mx-auto px-6 py-8">
         {/* Header */}

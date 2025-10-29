@@ -1,78 +1,116 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import ThemeSwitcher from './ThemeSwitcher';
+import { useState } from "react";
+import { FaBars, FaTimes } from "react-icons/fa";
+import { Moon, Sun } from "lucide-react";
+import { Link } from "react-router-dom"
+import clsx from "classnames";
 
-export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+export default function Navbar({ isAuthenticated = false, userName = "User" }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleTheme = () => {
+    setDarkMode(!darkMode);
+    document.documentElement.classList.toggle("dark");
+  };
+
+  const menuItems = isAuthenticated
+    ? [
+      { label: "Analysis", href: "#" },
+      { label: "Forecast", href: "#" },
+      { label: userName, href: "#" },
+      { label: "Logout", href: "#" },
+    ]
+    : [
+      { label: "Explore", href: "#" },
+      { label: "Login", href: "#" },
+      { label: "Register", href: "#" },
+    ];
 
   return (
-    <nav className="sticky top-0 z-40 bg-linear-to-r from-indigo-600/90 to-indigo-500/80 backdrop-blur-md shadow-md rounded-b-lg">
-      <div className="container mx-auto px-6 py-1">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 text-2xl font-bold text-gray-100 dark:text-indigo-100 hover:scale-105 transition-transform">
-            <span className='flex justify-center items-center font-semibold text-sm'>
+    <nav
+      className={clsx(
+        "fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-4xl md:w-3/4  ",
+        "rounded-2xl px-6 py-3 glass transition-all duration-300 flex items-center justify-between shadow-lg"
+      )}
+    >
+      {/* LOGO */}
+      <Link to={'/'} className="text-md text-white-600 hover:scale-110 active:scale:90">
+        <span className="flex items-center justify-center">
+          <img className="h-10 rounded-full" src="/images/logo-no-bg.png" alt="logo" />
+          {/* <span className="flex flex-col items-center justify-center">
+            <span>Cipher</span>
+            <span>Bucks</span>
+          </span> */}
+        </span>
+      </Link >
 
-              <img className='h-15 rounded-full' src="/images/logo-no-bg.png" alt="Cipher Bucks Logo" />
-              <h2 className='flex flex-col justify-center items-start gap-0'>
-                <span>Cipher</span>
-                <span>Bucks</span>
-              </h2>
-            </span>
-          </Link>
+      {/* DESKTOP LINKS */}
+      <div className=" md:flex items-center space-x-6">
+        <Link to="/about" className="text-gray-800 dark:text-gray-200 hover:text-indigo-500">
+          About Us
+        </Link>
+        <Link to="/contact" className="text-gray-800 dark:text-gray-200 hover:text-indigo-500">
+          Contact
+        </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
-            <Link to="/contact" className="text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">
-              Contact
-            </Link>
-            <Link to="/login" className="px-4 py-2 text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">
-              Login
-            </Link>
-            <Link to="/signup" className="bg-[#FF4C4C] hover:bg-red-600 text-white px-4 py-1 rounded-sm font-semibold shadow-md hover:shadow-lg transition-all">
-              Sign Up
-            </Link>
-            <ThemeSwitcher />
-          </div>
+        {/* THEME TOGGLER */}
+        <button
+          onClick={toggleTheme}
+          className="p-2 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-800 transition"
+        >
+          {darkMode ? (
+            <Sun className="w-5 h-5 text-yellow-400" />
+          ) : (
+            <Moon className="w-5 h-5 text-indigo-600" />
+          )}
+        </button>
+      </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center space-x-4">
-            <ThemeSwitcher />
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-gray-700 dark:text-gray-300 p-2"
-            >
-              {mobileMenuOpen ? '✕' : '☰'}
-            </button>
-          </div>
-        </div>
+      {/* MOBILE MENU BUTTON */}
+      <div className="md:hidden flex items-center">
+        <button onClick={() => setMenuOpen(!menuOpen)} className="text-2xl text-indigo-600 dark:text-indigo-400">
+          {menuOpen ? <FaTimes /> : <FaBars />}
+        </button>
+      </div>
 
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 space-y-3 border-t border-gray-200 dark:border-gray-700 pt-4">
-            <Link
-              to="/contact"
-              className="block text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Contact
-            </Link>
-            <Link
-              to="/login"
-              className="block text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Login
-            </Link>
-            <Link
-              to="/signup"
-              className="block bg-[#FF4C4C] hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold text-center transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Sign Up
-            </Link>
-          </div>
+      {/* MOBILE MENU DROPDOWN */}
+      <div
+        className={clsx(
+          "absolute top-full left-0 w-full rounded-b-2xl glass backdrop-blur-md shadow-md",
+          "flex flex-col items-start p-4 space-y-3 transition-all duration-300",
+          menuOpen ? "opacity-100 translate-y-2" : "opacity-0 pointer-events-none -translate-y-2"
         )}
+      >
+        <a href="#about" className="block text-gray-800 dark:text-gray-200 hover:text-indigo-500">
+          About Us
+        </a>
+        <a href="#contact" className="block text-gray-800 dark:text-gray-200 hover:text-indigo-500">
+          Contact
+        </a>
+
+        <hr className="w-full border-gray-300 dark:border-gray-700" />
+
+        {menuItems.map((item) => (
+          <a
+            key={item.label}
+            href={item.href}
+            className="block text-gray-800 dark:text-gray-200 hover:text-indigo-500"
+          >
+            {item.label}
+          </a>
+        ))}
+
+        {/* THEME TOGGLER */}
+        <button
+          onClick={toggleTheme}
+          className="mt-3 p-2 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-800 transition self-center"
+        >
+          {darkMode ? (
+            <Sun className="w-5 h-5 text-yellow-400" />
+          ) : (
+            <Moon className="w-5 h-5 text-indigo-600" />
+          )}
+        </button>
       </div>
     </nav>
   );

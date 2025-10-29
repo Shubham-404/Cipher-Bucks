@@ -1,40 +1,44 @@
 // src/components/Layout.jsx
 import { Outlet } from 'react-router-dom';
-import Header from './partials/Header';
-import Footer from './partials/Footer';
+import Header from './components/partials/Header';
+import Footer from './components/partials/Footer';
+import Loader from './components/Loader';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
+import Navbar from './components/Navbar';
 
 const Layout = ({ title }) => {
     gsap.registerPlugin(useGSAP);
     useGSAP(() => {
         gsap.fromTo('#loading-screen',
-            { opacity: 1, scale: 1, display: 'flex' },
+            { opacity: 1, display: 'flex' },
             {
                 opacity: 0,
-                scale: 30,
+                // scale: 0,
                 display: 'none',
                 ease: "power4.inOut",
-                duration: 3.5
+                duration: 1,
+                delay: 1
             })
     })
 
+
     return (
-        <div className="parent h-full w-full dark:text-white bg-gradient-to-b from-indigo-500 via-indigo-500 to-white dark:to-gray-700">
+        <div className="dark">
             {/* Loading Screen */}
-            <div
+            < div
                 id="loading-screen"
-                className="fixed h-full w-full inset-0 z-50 bg-indigo-500 flex items-center justify-center"
+                className="fixed h-full w-full inset-0 z-50 bg-black/50 backdrop-blur-lg flex items-center justify-center"
             >
-                <h1 className="text-transparent bg-clip-text bg-white text-6xl md:text-8xl font-extrabold">
-                    Cipher Bucks.
-                </h1>
+                <Loader />
+            </div >
+            <div className="parent pt-20 h-full w-full bg-gray-100 dark:text-white dark:bg-gray-900">
+                <Navbar isAuthenticated={true} userName="Alex" />
+                <main className="min-h-[80%] w-full overflow-x-hidden">
+                    <Outlet title={title} />
+                </main>
+                <Footer />
             </div>
-            <Header />
-            <main className="min-h-[80%] w-full">
-                <Outlet title={title} />
-            </main>
-            <Footer />
         </div>
     );
 };

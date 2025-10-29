@@ -12,13 +12,15 @@ import Hisabs from './pages/userPages/Hisabs'
 import Encrypted from './pages/userPages/Encrypted'
 import Settings from './pages/userPages/Settings'
 import ProtectedRoute from './components/ProtectedRoute'
+import Layout from './Layout'
 
 const App = () => {
   return (
     <Router>
       <Routes>
         {/* Public Routes */}
-        <Route path='/' element={<Home />} />
+        <Route dark path='/' element={<Layout />} >
+        <Route index element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/contact' element={<Contact />} />
@@ -60,6 +62,7 @@ const App = () => {
             </div>
           </div>
         } />
+        </Route>
       </Routes>
     </Router>
   )

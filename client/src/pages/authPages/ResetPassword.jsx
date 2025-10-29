@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
-import InputField from '../components/InputField';
-import Button from '../components/Button';
-import Loader from '../components/Loader';
-import ThemeSwitcher from '../components/ThemeSwitcher';
+import InputField from '../../components/InputField';
+import Button from '../../components/Button';
+import Loader from '../../components/Loader';
+import ThemeSwitcher from '../../components/ThemeSwitcher';
 
 export default function ResetPassword() {
   const [formData, setFormData] = useState({

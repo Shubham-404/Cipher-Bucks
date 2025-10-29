@@ -1,16 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
-import Sidebar from '../components/Sidebar';
-import Card from '../components/Card';
-import Button from '../components/Button';
-import Loader from '../components/Loader';
-import ThemeSwitcher from '../components/ThemeSwitcher';
+import DashboardNavbar from '../../components/DashboardNavbar';
+import Footer from '../../components/partials/Footer';
+import Card from '../../components/Card';
+import Button from '../../components/Button';
+import Loader from '../../components/Loader';
 
 export default function Hisabs() {
   document.title = "Cipher Bucks • Hisabs";
   const [hisabs, setHisabs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showAddModal, setShowAddModal] = useState(false);
+  const navigate = useNavigate();
   const cardsRef = useRef(null);
 
   useEffect(() => {
@@ -41,32 +42,30 @@ export default function Hisabs() {
     setHisabs(hisabs.filter(h => h.id !== id));
   };
 
-  return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
-      {loading && <Loader />}
-      <Sidebar />
+  if (loading) return <Loader />;
 
-      <div className="flex-1 p-8">
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-indigo-500 to-blue-400 dark:from-gray-900 dark:via-indigo-900 dark:to-gray-800">
+      <DashboardNavbar />
+
+      <div className="container mx-auto px-6 py-8">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Hisabs 📓
+        <div className="flex flex-wrap justify-between items-center mb-8 gap-4">
+          <div className="text-center flex-1">
+            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+              All Hisabs 📓
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-white/90">
               Manage all your transactions
             </p>
           </div>
-          <div className="flex items-center space-x-4">
-            <ThemeSwitcher />
-            <Button onClick={() => setShowAddModal(true)}>
-              + Add Hisab
-            </Button>
-          </div>
+          <Button onClick={() => navigate('/add-hisab')} className="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 rounded-full">
+            + Add Hisab
+          </Button>
         </div>
 
         {/* Hisabs List */}
-        <div ref={cardsRef} className="space-y-4">
+        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {hisabs.map((hisab) => (
             <Card key={hisab.id} className="hover:shadow-xl transition-all">
               <div className="flex items-center justify-between">
@@ -125,15 +124,17 @@ export default function Hisabs() {
           ))}
         </div>
 
-        {hisabs.length === 0 && !loading && (
+        {hisabs.length === 0 && (
           <div className="text-center py-16">
             <div className="text-6xl mb-4">📭</div>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+            <p className="text-xl text-white">
               No hisabs yet. Add your first transaction!
             </p>
           </div>
         )}
       </div>
+
+      <Footer />
     </div>
   );
 }

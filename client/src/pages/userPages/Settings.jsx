@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import Sidebar from '../components/Sidebar';
-import Card from '../components/Card';
-import Button from '../components/Button';
-import InputField from '../components/InputField';
-import ThemeSwitcher from '../components/ThemeSwitcher';
+import DashboardNavbar from '../../components/DashboardNavbar';
+import Footer from '../../components/partials/Footer';
+import Card from '../../components/Card';
+import Button from '../../components/Button';
+import InputField from '../../components/InputField';
 
 export default function Settings() {
   document.title = "Cipher Bucks • Settings";
@@ -44,30 +44,27 @@ export default function Settings() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Sidebar />
+    <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-indigo-500 to-blue-400 dark:from-gray-900 dark:via-indigo-900 dark:to-gray-800">
+      <DashboardNavbar />
 
-      <div className="flex-1 p-8">
+      <div className="container mx-auto px-6 py-8">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Settings ⚙️
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">
-              Manage your account and preferences
-            </p>
-          </div>
-          <ThemeSwitcher />
+        <div className="text-center mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+            Settings ⚙️
+          </h1>
+          <p className="text-white/90">
+            Manage your account and preferences
+          </p>
         </div>
 
         {saved && (
-          <div className="bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-700 text-green-800 dark:text-green-200 px-4 py-3 rounded-lg mb-6">
+          <div className="bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-700 text-green-800 dark:text-green-200 px-4 py-3 rounded-lg mb-6 max-w-2xl mx-auto">
             ✅ Settings saved successfully!
           </div>
         )}
 
-        <div ref={cardsRef} className="space-y-6 max-w-2xl">
+        <div ref={cardsRef} className="space-y-6 max-w-2xl mx-auto">
           {/* Profile Settings */}
           <Card>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
@@ -174,6 +171,8 @@ export default function Settings() {
           </Card>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

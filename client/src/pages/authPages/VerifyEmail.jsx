@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
-import Button from '../components/Button';
-import Loader from '../components/Loader';
-import ThemeSwitcher from '../components/ThemeSwitcher';
+import Button from '../../components/Button';
+import Loader from '../../components/Loader';
+import ThemeSwitcher from '../../components/ThemeSwitcher';
 
 export default function VerifyEmail() {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);

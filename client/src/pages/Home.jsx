@@ -1,7 +1,7 @@
+// src/pages/Home.jsx
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
-import Navbar from '../components/Navbar';
 
 export default function Home() {
   document.title = "Cipher Bucks • Home";
@@ -16,50 +16,96 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* <Navbar /> */}
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-white max-md:text-sm">
+      <div ref={heroRef} className="w-full max-w-6xl px-6 md:px-12 py-12">
+        {/* Top Section */}
+        <div className="relative flex items-center justify-center gap-6">
+          {/* Shield Icon */}
+          <div className="w-70 h-50 max-lg:absolute max-lg:w-full bottom-0 -z-1 max-lg:bg-blend-color-burn max-lg:brightness-30 rounded-2xl bg-[url(/images/illustration.png)] bg-center bg-cover flex items-center justify-center">
+          </div>
 
-      {/* Main Content */}
-      <div id="main-content" className="flex justify-center items-center min-h-[85vh]">
-        <div
-          className="w-full max-w-4xl bg-white dark:bg-gray-700 bg-no-repeat bg-[length:auto_65%] bg-top bg-[url('/images/background.png')] dark:bg-blend-color-burn shadow-2xl rounded-3xl p-10 my-5 text-center space-y-8"
-          ref={heroRef}
-        >
-          <h1 className="text-transparent font-black bg-clip-text bg-gradient-to-r from-indigo-700  via-indigo-400 to-indigo-700 text-4xl md:text-6xl">
-            Cipher Bucks
-          </h1>
-          <p className="text-xl justify-self-center w-75 font-medium text-gray-600 dark:text-white">
-            A simple, secure ledger system by <a className="text-red-400 font-bold" target='_blank' href='https://github.com/Shubham-404'>Shubham-404</a>
-          </p>
-          <p className="text-gray-600 dark:text-white w-90 text-md max-w-2xl mx-auto">
-            Cipher Bucks lets you manage multiple hisaabs with optional passcode protection and a delightful UI
-            experience.
-          </p>
-          <Link
-            to="/login"
-            className="inline-block px-7 py-3 bg-red-500 hover:bg-red-600 text-white rounded-full text-md font-semibold shadow-lg transition-all"
-          >
-            Start Logging Now 🚀
-          </Link>
-
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8 text-left">
-            {[
-              ['🧾 Multiple Hisaabs', 'Easily manage separate transaction books under your account.'],
-              ['🔐 Encrypted Safety', 'Add passcode protection to sensitive records — unlock only when needed.'],
-              ['🧠 Intuitive UX', 'Smooth interactions, responsive design, and intelligent show/hide logic.'],
-              ['👨‍💻 Built with ❤️', 'Crafted by a dev exploring the full-stack journey — Node.js, MongoDB, EJS.']
-            ].map(([title, desc]) => (
-              <div
-                key={title}
-                className="bg-indigo-50/20 backdrop-blur-2xl p-6 rounded-xl shadow-inner hover:shadow-lg transition"
+          <div className='flex flex-col min-w-sx p-5 justify-center items-start space-y-6 max-md:space-y-3'>
+            <h1 className="text-6xl max-md:text-5xl font-bold">
+              Cipher Bucks
+            </h1>
+            <span className="text-lg max-md:text-sm  text-gray-600 dark:text-gray-300">
+              A simple, secure ledger system <br /> by{' '}
+              <a
+                href="https://github.com/Shubham-404"
+                target="_blank"
+                rel="noreferrer"
+                className="font-semibold text-teal-500 hover:underline"
               >
-                <h2 className="text-xl font-semibold text-indigo-700 dark:text-indigo-300 mb-2">{title}</h2>
-                <p className="text-gray-600 dark:text-gray-200 text-sm">{desc}</p>
-              </div>
-            ))}
+                Shubham-404
+              </a>
+            </span>
+
+            <p className="max-w-xl text-gray-500 dark:text-gray-400 text-md text-shadow-md text-shadow-black">
+              Cipher Bucks lets you manage multiple hisaabs with optional passcode
+              protection and a delightful UI experience.
+            </p>
+
+            <Link
+              to="/login"
+              className="mt-6 inline-block bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition-all"
+            >
+              Start Logging Now
+            </Link>
           </div>
         </div>
+
+        {/* Features Section */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto mt-10">
+          {/* Feature Card */}
+          <div className="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="p-3 bg-teal-500/10 rounded-full text-teal-600 dark:text-teal-400">
+                🧾
+              </div>
+              <h3 className="text-lg font-semibold">Multiple Hisaabs</h3>
+            </div>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Easily manage separate transaction books under your account.
+            </p>
+          </div>
+
+          <div className="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="p-3 bg-blue-500/10 rounded-full text-blue-600 dark:text-blue-400">
+                🔐
+              </div>
+              <h3 className="text-lg font-semibold">Encrypted Safety</h3>
+            </div>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Keep your data encrypted and private — only you can access it.
+            </p>
+          </div>
+
+          <div className="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="p-3 bg-orange-500/10 rounded-full text-orange-600 dark:text-orange-400">
+                🧠
+              </div>
+              <h3 className="text-lg font-semibold">Intuitive UX</h3>
+            </div>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Minimal, clean, and responsive experience with subtle animations.
+            </p>
+          </div>
+
+          <div className="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="p-3 bg-purple-500/10 rounded-full text-purple-600 dark:text-purple-400">
+                💜
+              </div>
+              <h3 className="text-lg font-semibold">Built with ❤️</h3>
+            </div>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Crafted with care using React, Tailwind, and smooth GSAP magic.
+            </p>
+          </div>
+        </div>
+
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/authPages/Login'
 import Signup from './pages/authPages/Signup'
@@ -56,9 +56,9 @@ const App = () => {
             <div className="text-center">
               <h1 className="text-6xl font-bold text-gray-900 dark:text-white mb-4">404</h1>
               <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">Page not found</p>
-              <a href="/" className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+              <Link to="/" className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
                 Go Home
-              </a>
+              </Link>
             </div>
           </div>
         } />

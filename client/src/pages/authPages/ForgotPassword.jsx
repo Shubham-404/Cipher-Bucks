@@ -33,7 +33,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-indigo-600 via-indigo-500 to-blue-400 dark:from-gray-900 dark:via-indigo-900 dark:to-gray-800 relative">
+    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-6 max-md:p-4 relative">
       {loading && <Loader />}
 
       {/* Theme Switcher */}
@@ -41,18 +41,18 @@ export default function ForgotPassword() {
         <ThemeSwitcher />
       </div>
 
-      <div ref={cardRef} className="w-full max-w-md bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-8">
+      <div ref={cardRef} className="w-full max-w-md max-md:w-[95%] bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 max-md:p-6 border border-gray-100 dark:border-gray-700 shadow-indigo-200/30 dark:shadow-indigo-800/20">
         <div className="text-center mb-8">
           <div className="text-5xl mb-4">🔑</div>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          <h2 className="text-3xl max-md:text-2xl font-black mb-2 text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 via-indigo-400 to-indigo-700">
             Forgot Password?
           </h2>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-600 dark:text-gray-300 max-md:text-sm">
             No worries! Enter your email and we'll send you an OTP to reset your password.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="space-y-6">
           <InputField
             label="Email Address"
             type="email"
@@ -62,9 +62,13 @@ export default function ForgotPassword() {
             placeholder="Enter your email"
           />
 
-          <Button type="submit" variant="primary" className="w-full mt-4">
-            Send OTP
-          </Button>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full mt-4 px-6 py-3 bg-orange-500 hover:bg-orange-600 dark:bg-orange-500 dark:hover:bg-orange-400 text-white rounded-full font-semibold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01] disabled:opacity-50"
+          >
+            {loading ? 'Processing...' : 'Send OTP'}
+          </button>
         </form>
 
         <div className="text-center mt-6">

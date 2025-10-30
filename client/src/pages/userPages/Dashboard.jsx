@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
-import DashboardNavbar from '../../components/DashboardNavbar';
-import Footer from '../../components/partials/Footer';
 import Loader from '../../components/Loader';
 
 export default function Dashboard() {
-  document.title = "Cipher Bucks • Dashboard";
+  document.title = "Vault Book • Dashboard";
   const [user, setUser] = useState({ name: 'User' });
   const [hisabs, setHisabs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -110,21 +108,21 @@ export default function Dashboard() {
   if (loading) return <Loader />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-indigo-500 to-blue-400 dark:from-gray-900 dark:via-indigo-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* <DashboardNavbar /> */}
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-8">
         {/* Welcome Section */}
         <div ref={greetingRef} className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Welcome back, {user.name} 👋
           </h1>
         </div>
 
         {/* Your Hisaabs Title & Add Button */}
         <div className="flex flex-wrap justify-between items-center mb-8 gap-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-white text-center flex-1">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white text-center flex-1">
             Your Hisaabs
           </h2>
           <button
@@ -139,7 +137,7 @@ export default function Dashboard() {
         {hisabs.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-6xl mb-4">📭</div>
-            <p className="text-xl text-white">
+            <p className="text-xl text-gray-700 dark:text-gray-300">
               No hisaabs yet. Add your first transaction!
             </p>
           </div>
@@ -160,7 +158,6 @@ export default function Dashboard() {
         )}
       </div>
 
-      <Footer />
     </div>
   );
 }

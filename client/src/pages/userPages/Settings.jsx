@@ -1,13 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import DashboardNavbar from '../../components/DashboardNavbar';
-import Footer from '../../components/partials/Footer';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import InputField from '../../components/InputField';
 
 export default function Settings() {
-  document.title = "Cipher Bucks • Settings";
+  document.title = "Vault Book • Settings";
   const [profile, setProfile] = useState({
     name: 'Shubham',
     email: 'user@example.com',
@@ -44,16 +42,16 @@ export default function Settings() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-indigo-500 to-blue-400 dark:from-gray-900 dark:via-indigo-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* <DashboardNavbar /> */}
 
       <div className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
             Settings ⚙️
           </h1>
-          <p className="text-white/90">
+          <p className="text-gray-600 dark:text-gray-400">
             Manage your account and preferences
           </p>
         </div>
@@ -172,7 +170,6 @@ export default function Settings() {
         </div>
       </div>
 
-      <Footer />
     </div>
   );
 }

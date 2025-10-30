@@ -1,14 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import DashboardNavbar from '../../components/DashboardNavbar';
-import Footer from '../../components/partials/Footer';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import InputField from '../../components/InputField';
 import Loader from '../../components/Loader';
 
 export default function Encrypted() {
-  document.title = "Cipher Bucks • Encrypted Hisabs";
+  document.title = "Vault Book • Encrypted Hisabs";
   const [isLocked, setIsLocked] = useState(true);
   const [passcode, setPasscode] = useState('');
   const [error, setError] = useState('');
@@ -65,7 +63,7 @@ export default function Encrypted() {
   }, [isLocked, encryptedHisabs]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-indigo-500 to-blue-400 dark:from-gray-900 dark:via-indigo-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {loading && <Loader />}
       {/* <DashboardNavbar /> */}
 
@@ -73,10 +71,10 @@ export default function Encrypted() {
         {/* Header */}
         <div className="flex flex-wrap justify-between items-center mb-8 gap-4">
           <div className="text-center flex-1">
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
               Encrypted Hisabs 🔐
             </h1>
-            <p className="text-white/90">
+            <p className="text-gray-600 dark:text-gray-400">
               Secure your sensitive transactions
             </p>
           </div>
@@ -183,7 +181,7 @@ export default function Encrypted() {
             {encryptedHisabs.length === 0 && (
               <div className="text-center py-16">
                 <div className="text-6xl mb-4">🔐</div>
-                <p className="text-xl text-white">
+                <p className="text-xl text-gray-700 dark:text-gray-300">
                   No encrypted hisabs yet. Add sensitive transactions here!
                 </p>
               </div>
@@ -192,7 +190,6 @@ export default function Encrypted() {
         )}
       </div>
 
-      <Footer />
     </div>
   );
 }

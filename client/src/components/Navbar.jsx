@@ -4,6 +4,10 @@ import {
   CircleCheckIcon,
   CircleHelpIcon,
   CircleIcon,
+  LogIn,
+  LogOut,
+  User,
+  UserPlus,
 } from "lucide-react";
 import {
   NavigationMenu,
@@ -15,7 +19,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
-export default function Navbar() {
+export default function Navbar({ isAuthenticated }) {
   return (
     <nav
       className="
@@ -23,11 +27,8 @@ export default function Navbar() {
         flex justify-between items-center
         w-[90%] max-w-5xl 
         px-8 py-3 
-        rounded-full 
-        border border-indigo-200/30 dark:border-indigo-800/40 
-        bg-white/60 dark:bg-gray-900/70 
-        backdrop-blur-xl 
-        shadow-lg shadow-indigo-200/20 dark:shadow-indigo-400/20
+        rounded-full border-1/2 border-indigo-800/10 dark:border-indigo-400/10
+        glass-nav shadow-md bg-white/60 dark:bg-gray-900/60
         transition-all duration-300 z-50
       "
     >
@@ -38,8 +39,8 @@ export default function Navbar() {
       >
         <img
           src="/images/logo-no-bg.png"
-          alt="Cipher Bucks logo"
-          className="h-10 w-10 rounded-full object-contain"
+          alt="Vault Book logo"
+          className="h-10 w-10 rounded-full object-contain invert-80 drop-shadow-md hover:drop-shadow-lg active:drop-shadow-sm dark:invert-0"
         />
       </Link>
 
@@ -63,7 +64,7 @@ export default function Navbar() {
             <NavigationMenuContent>
               <ul className="grid gap-2 p-4 w-60 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
                 <ListItem href="/about" title="About">
-                  Discover how Cipher Bucks simplifies your record-keeping.
+                  Discover how Vault Book simplifies your record-keeping.
                 </ListItem>
                 <ListItem href="/contact" title="Contact">
                   Learn more about the developer and the tech behind it.
@@ -84,24 +85,51 @@ export default function Navbar() {
                 font-semibold text-sm
               `}
             >
-              Sign up
+              {
+                (isAuthenticated) ?
+                  "Profile" :
+                  "Sign up"
+              }
             </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid gap-3 p-4 w-64 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
+                {(!isAuthenticated) ?
+                  <>
+                    <StatusItem
+                      icon={<UserPlus size={16} />}
+                      label="Signup"
+                      color="text-orange-600 dark:text-orange-400"
+                      to="/signup"
+                    />
+                    <StatusItem
+                      icon={<LogIn size={16} />}
+                      label="Login"
+                      color="text-indigo-600 dark:text-indigo-400"
+                      to="/login"
+                    />
+
+                  </>
+                  :
+                  <>
+                    <StatusItem
+                      icon={<User size={16} />}
+                      label="Profile"
+                      color="text-orange-600 dark:text-orange-400"
+                      to="/profile"
+                    />
+                    <StatusItem
+                      icon={<LogOut size={16} />}
+                      label="Logout"
+                      color="text-orange-600 dark:text-orange-400"
+                      to="/logout"
+                    />
+                  </>
+                }
                 <StatusItem
                   icon={<CircleHelpIcon size={16} />}
-                  label="Signup"
-                  color="text-orange-600 dark:text-orange-400"
-                />
-                <StatusItem
-                  icon={<CircleIcon size={16} />}
-                  label="Login"
-                  color="text-indigo-600 dark:text-indigo-400"
-                />
-                <StatusItem
-                  icon={<CircleCheckIcon size={16} />}
                   label="Help & Support"
                   color="text-teal-600 dark:text-teal-400"
+                  to="/help-support"
                 />
               </ul>
             </NavigationMenuContent>
@@ -139,11 +167,11 @@ function ListItem({ title, children, href }) {
 }
 
 /* Status Item with Icon */
-function StatusItem({ icon, label, color }) {
+function StatusItem({ icon, label, color, to }) {
   return (
     <li>
-      <a
-        href="#"
+      <Link
+        to={to}
         className={`
           flex items-center gap-3 p-2 rounded-lg 
           text-gray-700 dark:text-gray-200 
@@ -158,7 +186,7 @@ function StatusItem({ icon, label, color }) {
         <span className={`font-medium text-sm group-hover:${color}`}>
           {label}
         </span>
-      </a>
+      </Link>
     </li>
   );
 }

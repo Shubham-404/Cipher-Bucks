@@ -17,14 +17,14 @@ const Layout = ({ title }) => {
                 // scale: 0,
                 display: 'none',
                 ease: "power4.inOut",
-                duration: 1,
+                duration: .7,
                 delay: 1
             })
     })
 
 
     return (
-        <div className="dark">
+        <div className=''>
             {/* Loading Screen */}
             < div
                 id="loading-screen"
@@ -32,9 +32,9 @@ const Layout = ({ title }) => {
             >
                 <Loader />
             </div >
-            <div className="parent pt-20 h-full w-full bg-gray-100 dark:text-white dark:bg-gray-900">
+            <div className="parent  h-full w-full bg-gray-100 dark:text-white dark:bg-gray-900">
                 <Navbar isAuthenticated={true} userName="Alex" />
-                <main className="min-h-[80%] w-full overflow-x-hidden">
+                <main className="min-h-[80%] pt-22 w-full overflow-x-hidden">
                     <Outlet title={title} />
                 </main>
                 <Footer />

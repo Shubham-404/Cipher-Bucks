@@ -52,12 +52,12 @@ export default function VerifyEmail() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#5A5AFB] to-blue-400 p-6 relative">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-6 max-md:p-4 relative">
       {loading && <Loader />}
       
       {/* Theme Switcher & Back Link */}
       <div className="fixed top-4 left-4 z-50">
-        <Link to="/" className="text-white hover:text-blue-200 transition-colors flex items-center space-x-2">
+        <Link to="/" className="text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center space-x-2 max-md:text-sm">
           <span>←</span>
           <span>Home</span>
         </Link>
@@ -66,13 +66,13 @@ export default function VerifyEmail() {
         <ThemeSwitcher />
       </div>
 
-      <div ref={cardRef} className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
+      <div ref={cardRef} className="w-full max-w-md max-md:w-[95%] bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 max-md:p-6 border border-gray-100 dark:border-gray-700 shadow-indigo-200/30 dark:shadow-indigo-800/20">
         <div className="text-center mb-8">
           <div className="text-5xl mb-4">📧</div>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          <h2 className="text-3xl max-md:text-2xl font-black mb-2 text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 via-indigo-400 to-indigo-700">
             Verify Your Email
           </h2>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-600 dark:text-gray-300 max-md:text-sm">
             We've sent a 6-digit code to your email address
           </p>
         </div>
@@ -88,14 +88,17 @@ export default function VerifyEmail() {
                 value={digit}
                 onChange={(e) => handleChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
-                className="w-12 h-12 text-center text-xl font-bold border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:border-indigo-500 focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all"
+                className="w-12 h-12 max-md:w-10 max-md:h-10 max-md:text-lg text-center text-xl font-bold border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:border-indigo-500 focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all"
               />
             ))}
           </div>
 
-          <Button type="submit" variant="primary" className="w-full">
+          <button
+            type="submit"
+            className="w-full mt-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 dark:bg-orange-500 dark:hover:bg-orange-400 text-white rounded-full font-semibold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01]"
+          >
             Verify Email
-          </Button>
+          </button>
 
           <div className="text-center mt-6">
             <button type="button" className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">

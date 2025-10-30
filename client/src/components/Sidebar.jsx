@@ -22,7 +22,7 @@ export default function Sidebar() {
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2 text-xl font-bold text-indigo-600 dark:text-indigo-400 hover:scale-105 transition-transform mb-8">
           <span>🚀</span>
-          <span>Cipher Bucks</span>
+          <span>Vault Book</span>
         </Link>
 
         {/* Navigation */}

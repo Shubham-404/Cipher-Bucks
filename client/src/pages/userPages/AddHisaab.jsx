@@ -8,7 +8,7 @@ import ThemeSwitcher from '../../components/ThemeSwitcher';
 import SidePanel from '../../components/SidePanel';
 
 export default function AddHisaab() {
-  document.title = "Cipher Bucks • Add Hisaab";
+  document.title = "Vault Book • Add Hisaab";
   const today = new Date().toISOString().split('T')[0];
   
   const [form, setForm] = useState({

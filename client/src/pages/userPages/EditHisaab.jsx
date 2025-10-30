@@ -8,7 +8,7 @@ import ThemeSwitcher from '../../components/ThemeSwitcher';
 import SidePanel from '../../components/SidePanel';
 
 export default function EditHisaab() {
-  document.title = "Cipher Bucks • Edit Hisaab";
+  document.title = "Vault Book • Edit Hisaab";
   const { id } = useParams();
   const today = new Date().toISOString().split('T')[0];
   

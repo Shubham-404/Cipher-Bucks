@@ -12,10 +12,10 @@ export default function DashboardNavbar() {
           {/* Logo */}
           <Link to="/dashboard" className="flex items-center space-x-2 text-2xl font-bold text-white hover:scale-105 transition-transform">
             <span className='flex justify-center items-center font-semibold text-sm'>
-              <img className='h-15 rounded-full' src="/images/logo-no-bg.png" alt="Cipher Bucks Logo" />
+              <img className='h-15 rounded-full' src="/images/logo-no-bg.png" alt="Vault Book Logo" />
               <h2 className='flex flex-col justify-center items-start gap-0'>
-                <span>Cipher</span>
-                <span>Bucks</span>
+                <span>Vault</span>
+                <span>Book</span>
               </h2>
             </span>
           </Link>

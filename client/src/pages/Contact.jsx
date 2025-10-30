@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar';
 import Card from '../components/Card';
 
 export default function Contact() {
-  document.title = "Cipher Bucks • Contact Us";
+  document.title = "Vault Book • Contact Us";
   const cardRef = useRef(null);
 
   useEffect(() => {

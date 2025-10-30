@@ -2,15 +2,15 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 const SidePanel = ({message, text}) => {
     return (
-        < div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br bg-indigo-800 bg-[url(/images/background.png)] bg-no-repeat bg-bottom bg-contain bg-blend-color-burn  items-center justify-center p-12" >
+        < div className="hidden lg:flex rounded-r-[50%] lg:w-1/2 bg-gradient-to-br bg-indigo-800 bg-[url(/images/background.png)] bg-no-repeat bg-bottom bg-contain bg-blend-color-burn  items-center justify-center p-12" >
             <div className="text-white text-center">
                 <Link to="/" className="inline-block mb-8 hover:scale-105 transition-transform">
                     <div className="flex items-center justify-center">
-                        <span className=''><img className='h-25 rounded-full' src="/images/logo-no-bg.png" alt="Cipher Bucks Logo" /></span>
+                        <span className=''><img className='h-25 rounded-full' src="/images/logo-no-bg.png" alt="Vault Book Logo" /></span>
                         <div className='h-15 mr-4 w-0.5 bg-white border'></div>
                         <span className='flex flex-col justify-center items-start text-3xl font-semibold'>
-                            <span>Cipher</span>
-                            <span>Bucks</span>
+                            <span>Vault</span>
+                            <span>Book</span>
                         </span>
                     </div>
                 </Link>

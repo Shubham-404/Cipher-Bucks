@@ -48,7 +48,7 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#5A5AFB] to-blue-400 p-6 relative">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-6 max-md:p-4 relative">
       {loading && <Loader />}
       
       {/* Theme Switcher */}
@@ -56,24 +56,24 @@ export default function ResetPassword() {
         <ThemeSwitcher />
       </div>
 
-      <div ref={cardRef} className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
+      <div ref={cardRef} className="w-full max-w-md max-md:w-[95%] bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 max-md:p-6 border border-gray-100 dark:border-gray-700 shadow-indigo-200/30 dark:shadow-indigo-800/20">
         <div className="text-center mb-8">
           <div className="text-5xl mb-4">🔒</div>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          <h2 className="text-3xl max-md:text-2xl font-black mb-2 text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 via-indigo-400 to-indigo-700">
             Reset Password
           </h2>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-600 dark:text-gray-300 max-md:text-sm">
             Enter the OTP sent to your email and create a new password
           </p>
         </div>
 
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
+          <div className="bg-red-100 dark:bg-red-900/20 border border-red-400 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg mb-4">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="space-y-6">
           <InputField
             label="OTP Code"
             type="text"
@@ -102,9 +102,13 @@ export default function ResetPassword() {
             placeholder="Confirm new password"
           />
 
-          <Button type="submit" variant="primary" className="w-full mt-4">
-            Reset Password
-          </Button>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full mt-4 px-6 py-3 bg-orange-500 hover:bg-orange-600 dark:bg-orange-500 dark:hover:bg-orange-400 text-white rounded-full font-semibold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01] disabled:opacity-50"
+          >
+            {loading ? 'Processing...' : 'Reset Password'}
+          </button>
         </form>
       </div>
     </div>

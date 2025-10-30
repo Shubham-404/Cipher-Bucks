@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 
 export default function Home() {
-  document.title = "Cipher Bucks • Home";
+  document.title = "Vault Book • Home";
   const heroRef = useRef(null);
 
   useEffect(() => {
@@ -16,17 +16,17 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-white max-md:text-sm">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100  dark:bg-gray-900 text-gray-800 dark:text-white max-md:text-sm">
       <div ref={heroRef} className="w-full max-w-6xl px-6 md:px-12 py-12">
         {/* Top Section */}
         <div className="relative flex items-center justify-center gap-6">
           {/* Shield Icon */}
-          <div className="w-70 h-50 max-lg:absolute max-lg:w-full bottom-0 -z-1 max-lg:bg-blend-color-burn max-lg:brightness-30 rounded-2xl bg-[url(/images/illustration.png)] bg-center bg-cover flex items-center justify-center">
+          <div className="w-70 h-60 max-lg:absolute max-lg:w-full bottom-0 -z-1 max-lg:bg-blend-color-burn max-lg:opacity-10 rounded-2xl bg-[url(/images/illustration.png)] bg-center bg-cover flex items-center justify-center">
           </div>
 
           <div className='flex flex-col min-w-sx p-5 justify-center items-start space-y-6 max-md:space-y-3'>
             <h1 className="text-6xl max-md:text-5xl font-bold">
-              Cipher Bucks
+              Vault Book
             </h1>
             <span className="text-lg max-md:text-sm  text-gray-600 dark:text-gray-300">
               A simple, secure ledger system <br /> by{' '}
@@ -40,14 +40,14 @@ export default function Home() {
               </a>
             </span>
 
-            <p className="max-w-xl text-gray-500 dark:text-gray-400 text-md text-shadow-md text-shadow-black">
-              Cipher Bucks lets you manage multiple hisaabs with optional passcode
+            <p className="max-w-xl text-gray-600 dark:text-gray-400 text-md">
+              Vault Book lets you manage multiple hisaabs with optional passcode
               protection and a delightful UI experience.
             </p>
 
             <Link
               to="/login"
-              className="mt-6 inline-block bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition-all"
+              className="mt-4 inline-block bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition-all"
             >
               Start Logging Now
             </Link>

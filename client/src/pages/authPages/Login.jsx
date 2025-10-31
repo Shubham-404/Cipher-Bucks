@@ -44,21 +44,21 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex relative max-md:p-4 bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen flex relative  mb-2 max-md:p-4 bg-gray-100 dark:bg-gray-900">
       {loading && <Loader />}
 
       {/* Theme Switcher - Fixed top right */}
-      <div className="fixed top-4 right-4 z-50">
+      <div className="fixed top-5 right-3 p-5 z-50">
         <ThemeSwitcher />
       </div>
 
       {/* Left Panel */}
-      <SidePanel message="Welcome Back!" text="Your digital ledger — secure, simple, encrypted."/>
+      <SidePanel message="Welcome Back!" text="Your digital ledger — secure, simple, encrypted." />
 
       {/* Right Panel - Login Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 max-md:p-4">
         <div ref={cardRef} className="w-full max-w-md max-md:w-[95%] bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 max-md:p-6 border border-gray-100 dark:border-gray-700 shadow-indigo-200/30 dark:shadow-indigo-800/20">
-          <h2 className="text-3xl max-md:text-2xl font-black mb-2 text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 via-indigo-400 to-indigo-700">
+          <h2 className="text-3xl max-md:text-2xl font-black text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 via-indigo-400 to-indigo-700">
             Login 🔐
           </h2>
           <p className="text-gray-600 dark:text-gray-300 text-center mb-8 max-md:text-sm">

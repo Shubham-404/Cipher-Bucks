@@ -52,7 +52,7 @@ export default function VerifyEmail() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-6 max-md:p-4 relative">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-6 max-md:p-4 relative">
       {loading && <Loader />}
       
       {/* Theme Switcher & Back Link */}

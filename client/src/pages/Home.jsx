@@ -16,7 +16,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100  dark:bg-gray-900 text-gray-800 dark:text-white max-md:text-sm">
+    <div className="min-h-screen overflow-hidden flex flex-col items-center justify-center bg-gray-100  dark:bg-gray-900 text-gray-800 dark:text-white max-md:text-sm">
       <div ref={heroRef} className="w-full max-w-6xl px-6 md:px-12 py-12">
         {/* Top Section */}
         <div className="relative flex items-center justify-center gap-6">
@@ -25,10 +25,10 @@ export default function Home() {
           </div>
 
           <div className='flex flex-col min-w-sx p-5 justify-center items-start space-y-6 max-md:space-y-3'>
-            <h1 className="text-6xl max-md:text-5xl font-bold">
+            <h1 className="text-7xl max-md:text-5xl font-bold">
               Vault Book
             </h1>
-            <span className="text-lg max-md:text-sm  text-gray-600 dark:text-gray-300">
+            <span className="text-xl max-md:text-sm  text-gray-600 dark:text-gray-300">
               A simple, secure ledger system <br /> by{' '}
               <a
                 href="https://github.com/Shubham-404"

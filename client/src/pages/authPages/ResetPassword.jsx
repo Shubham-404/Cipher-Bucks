@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import InputField from '../../components/InputField';
@@ -7,12 +8,7 @@ import Loader from '../../components/Loader';
 import ThemeSwitcher from '../../components/ThemeSwitcher';
 
 export default function ResetPassword() {
-  const [formData, setFormData] = useState({
-    otp: '',
-    newPassword: '',
-    confirmPassword: ''
-  });
-  const [loading, setLoading] = useState(false);
+  const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm();
   const [error, setError] = useState('');
   const cardRef = useRef(null);
   const navigate = useNavigate();
@@ -25,31 +21,16 @@ export default function ResetPassword() {
     );
   }, []);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     setError('');
-
-    if (formData.newPassword !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
-    setLoading(true);
-
-    // TODO: Replace with actual API call
-    setTimeout(() => {
-      setLoading(false);
-      navigate('/login');
-    }, 1500);
+    // TODO: Call reset-password API with `data.otp` and `data.newPassword`
+    // On success, navigate to login
+    // navigate('/login');
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-6 max-md:p-4 relative">
-      {loading && <Loader />}
+      {isSubmitting && <Loader />}
       
       {/* Theme Switcher */}
       <div className="fixed top-4 right-4 z-50">
@@ -73,41 +54,50 @@ export default function ResetPassword() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <InputField
-            label="OTP Code"
-            type="text"
-            name="otp"
-            value={formData.otp}
-            onChange={handleChange}
-            placeholder="Enter 6-digit OTP"
-            maxLength="6"
-          />
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div>
+            <label htmlFor="otp" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">OTP Code</label>
+            <input
+              id="otp"
+              type="text"
+              maxLength={6}
+              placeholder="Enter 6-digit OTP"
+              className={`w-full px-4 py-3 rounded-lg border ${errors.otp ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all`}
+              {...register('otp', { required: 'OTP is required', minLength: { value: 6, message: 'Enter 6 digits' }, maxLength: { value: 6, message: 'Enter 6 digits' } })}
+            />
+            {errors.otp && <p className="text-red-500 text-sm mt-1">{errors.otp.message}</p>}
+          </div>
 
-          <InputField
-            label="New Password"
-            type="password"
-            name="newPassword"
-            value={formData.newPassword}
-            onChange={handleChange}
-            placeholder="Enter new password"
-          />
+          <div>
+            <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">New Password</label>
+            <input
+              id="newPassword"
+              type="password"
+              placeholder="Enter new password"
+              className={`w-full px-4 py-3 rounded-lg border ${errors.newPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all`}
+              {...register('newPassword', { required: 'New password is required', minLength: { value: 6, message: 'Minimum 6 characters' } })}
+            />
+            {errors.newPassword && <p className="text-red-500 text-sm mt-1">{errors.newPassword.message}</p>}
+          </div>
 
-          <InputField
-            label="Confirm Password"
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            placeholder="Confirm new password"
-          />
+          <div>
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Confirm Password</label>
+            <input
+              id="confirmPassword"
+              type="password"
+              placeholder="Confirm new password"
+              className={`w-full px-4 py-3 rounded-lg border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all`}
+              {...register('confirmPassword', { required: 'Please confirm your password', validate: (value) => value === watch('newPassword') || 'Passwords do not match' })}
+            />
+            {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>}
+          </div>
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={isSubmitting}
             className="w-full mt-4 px-6 py-3 bg-orange-500 hover:bg-orange-600 dark:bg-orange-500 dark:hover:bg-orange-400 text-white rounded-full font-semibold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01] disabled:opacity-50"
           >
-            {loading ? 'Processing...' : 'Reset Password'}
+            {isSubmitting ? 'Processing...' : 'Reset Password'}
           </button>
         </form>
       </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import InputField from '../../components/InputField';
@@ -8,8 +9,7 @@ import ThemeSwitcher from '../../components/ThemeSwitcher';
 import SidePanel from '../../components/SidePanel';
 
 export default function ForgotPassword() {
-  const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
   const cardRef = useRef(null);
   const navigate = useNavigate();
 
@@ -21,20 +21,15 @@ export default function ForgotPassword() {
     );
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    // TODO: Replace with actual API call
-    setTimeout(() => {
-      setLoading(false);
-      navigate('/reset-password');
-    }, 1500);
+  const onSubmit = async (data) => {
+    // TODO: Call forgot-password API with `data.email`
+    // On success, navigate to reset-password
+    // navigate('/reset-password');
   };
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-6 max-md:p-4 relative">
-      {loading && <Loader />}
+      {isSubmitting && <Loader />}
 
       {/* Theme Switcher */}
       <div className="fixed top-4 right-4 z-50">
@@ -52,22 +47,25 @@ export default function ForgotPassword() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <InputField
-            label="Email Address"
-            type="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-          />
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="Enter your email"
+              className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all`}
+              {...register('email', { required: 'Email is required', pattern: { value: /[^@\s]+@[^@\s]+\.[^@\s]+/, message: 'Enter a valid email' } })}
+            />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+          </div>
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={isSubmitting}
             className="w-full mt-4 px-6 py-3 bg-orange-500 hover:bg-orange-600 dark:bg-orange-500 dark:hover:bg-orange-400 text-white rounded-full font-semibold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01] disabled:opacity-50"
           >
-            {loading ? 'Processing...' : 'Send OTP'}
+            {isSubmitting ? 'Processing...' : 'Send OTP'}
           </button>
         </form>
 

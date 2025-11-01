@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import InputField from '../../components/InputField';
@@ -11,8 +12,7 @@ import { Eye, EyeOff } from 'lucide-react';
 
 export default function Login() {
   document.title = "Vault Book • Login";
-  const [formData, setFormData] = useState({ username: '', password: '' });
-  const [loading, setLoading] = useState(false);
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -26,26 +26,19 @@ export default function Login() {
     );
   }, []);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  const onSubmit = async (data) => {
     setError('');
-
-    // TODO: Replace with actual API call
-    setTimeout(() => {
-      localStorage.setItem('isAuthenticated', 'true');
-      setLoading(false);
-      navigate('/dashboard');
-    }, 1500);
+    // TODO: Call login API with `data.username` and `data.password`
+    // On success, set auth state in context and navigate to dashboard
+    // Example:
+    // const { token } = await authService.login(data);
+    // setAuth({ isAuthenticated: true, token });
+    // navigate('/dashboard');
   };
 
   return (
     <div className="min-h-screen flex relative  mb-2 max-md:p-4 bg-gray-100 dark:bg-gray-900">
-      {loading && <Loader />}
+      {isSubmitting && <Loader />}
 
       {/* Theme Switcher - Fixed top right */}
       <div className="fixed top-5 right-3 p-5 z-50">
@@ -71,25 +64,27 @@ export default function Login() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <InputField
-              label="Username"
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              placeholder="Enter your username"
-            />
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div className="mb-1">
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Username</label>
+              <input
+                id="username"
+                type="text"
+                placeholder="Enter your username"
+                className={`w-full px-4 py-3 rounded-lg border ${errors.username ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all`}
+                {...register('username', { required: 'Username is required' })}
+              />
+              {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>}
+            </div>
 
             <div className="relative">
-              <InputField
-                label="Password"
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
+              <input
+                id="password"
                 type={showPassword ? 'text' : 'password'}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
                 placeholder="Enter your password"
-                className="pr-10"
+                className={`w-full px-4 py-3 rounded-lg border ${errors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all pr-10`}
+                {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Minimum 6 characters' } })}
               />
               <button
                 type="button"
@@ -99,6 +94,7 @@ export default function Login() {
               >
                 <div className="mt-6">{showPassword ? <EyeOff size={20} /> : <Eye size={20} />}</div>
               </button>
+              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
             </div>
 
             <div className="flex justify-end mb-6">
@@ -109,10 +105,10 @@ export default function Login() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={isSubmitting}
               className="w-full mt-4 px-6 py-3 bg-orange-500 hover:bg-orange-600 dark:bg-orange-500 dark:hover:bg-orange-400 text-white rounded-full font-semibold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01] disabled:opacity-50"
             >
-              {loading ? 'Processing...' : 'Login'}
+              {isSubmitting ? 'Processing...' : 'Login'}
             </button>
             <div className='flex justify-center items-center gap-5'>
               <Button type="button" variant="secondary" className="!p-0 overflow-hidden flex items-center justify-center self-center justify-self-center space-x-2 text-xs border border-gray-300 !rounded-full ">

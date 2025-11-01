@@ -1,13 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
+import { useForm, Controller } from 'react-hook-form';
 import Button from '../../components/Button';
 import Loader from '../../components/Loader';
 import ThemeSwitcher from '../../components/ThemeSwitcher';
 
 export default function VerifyEmail() {
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const [loading, setLoading] = useState(false);
+  const { control, handleSubmit, getValues, formState: { isSubmitting } } = useForm({
+    defaultValues: { code0: '', code1: '', code2: '', code3: '', code4: '', code5: '' }
+  });
   const inputRefs = useRef([]);
   const cardRef = useRef(null);
   const navigate = useNavigate();
@@ -22,38 +24,20 @@ export default function VerifyEmail() {
 
   const handleChange = (index, value) => {
     if (value.length > 1) return;
-    
-    const newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp);
-
-    // Auto-focus next input
-    if (value && index < 5) {
-      inputRefs.current[index + 1]?.focus();
-    }
+    if (value && index < 5) inputRefs.current[index + 1]?.focus();
   };
 
-  const handleKeyDown = (index, e) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    // TODO: Replace with actual API call
-    setTimeout(() => {
-      localStorage.setItem('isAuthenticated', 'true');
-      setLoading(false);
-      navigate('/dashboard');
-    }, 1500);
+  const onSubmit = async () => {
+    const values = getValues();
+    const code = `${values.code0}${values.code1}${values.code2}${values.code3}${values.code4}${values.code5}`;
+    // TODO: Call verify-email API with `code`
+    // On success, set auth state and navigate to dashboard
+    // navigate('/dashboard');
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-6 max-md:p-4 relative">
-      {loading && <Loader />}
+      {isSubmitting && <Loader />}
       
       {/* Theme Switcher & Back Link */}
       <div className="fixed top-4 left-4 z-50">
@@ -77,18 +61,24 @@ export default function VerifyEmail() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex justify-center space-x-3 mb-8">
-            {otp.map((digit, index) => (
-              <input
+            {[0,1,2,3,4,5].map((index) => (
+              <Controller
                 key={index}
-                ref={(el) => (inputRefs.current[index] = el)}
-                type="text"
-                maxLength="1"
-                value={digit}
-                onChange={(e) => handleChange(index, e.target.value)}
-                onKeyDown={(e) => handleKeyDown(index, e)}
-                className="w-12 h-12 max-md:w-10 max-md:h-10 max-md:text-lg text-center text-xl font-bold border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:border-indigo-500 focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all"
+                name={`code${index}`}
+                control={control}
+                rules={{ required: true, maxLength: 1, minLength: 1 }}
+                render={({ field }) => (
+                  <input
+                    ref={(el) => (inputRefs.current[index] = el)}
+                    type="text"
+                    maxLength={1}
+                    value={field.value}
+                    onChange={(e) => { field.onChange(e); handleChange(index, e.target.value); }}
+                    className="w-12 h-12 max-md:w-10 max-md:h-10 max-md:text-lg text-center text-xl font-bold border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:border-indigo-500 focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all"
+                  />
+                )}
               />
             ))}
           </div>

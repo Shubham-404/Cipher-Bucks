@@ -1,5 +1,6 @@
 // Signup.jsx:
 import { useState, useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import InputField from '../../components/InputField';
@@ -12,16 +13,7 @@ import { Eye, EyeOff } from 'lucide-react'; // Assuming you have lucide-react or
 
 export default function Signup() {
   document.title = "Vault Book • Signup";
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    // Removed confirmPassword from state to simplify the form, 
-    // but keeping it in the handleSubmit for temporary validation check only
-    // for this example's sake.
-    confirmPassword: '' 
-  });
-  const [loading, setLoading] = useState(false);
+  const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm();
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -35,29 +27,13 @@ export default function Signup() {
     );
   }, []);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     setError('');
-
-    // NOTE: In a real app, you would typically handle password complexity 
-    // and ONLY use ONE password field + a show/hide toggle.
-    // I'm keeping the confirmPassword check only because it was in the original logic.
-    if (formData.password !== formData.confirmPassword && formData.confirmPassword !== '') {
-      setError('Passwords do not match');
-      return;
-    }
-
-    setLoading(true);
-
-    // TODO: Replace with actual API call
-    setTimeout(() => {
-      setLoading(false);
-      navigate('/verify-email');
-    }, 1500);
+    // TODO: Call signup API with `data`
+    // On success, navigate to verify-email
+    // Example:
+    // await authService.signup(data);
+    // navigate('/verify-email');
   };
 
   const togglePasswordVisibility = () => {
@@ -66,7 +42,7 @@ export default function Signup() {
 
   return (
     <div className="min-h-screen flex relative max-md:p-4 bg-gray-100 dark:bg-gray-900">
-      {loading && <Loader />}
+      {isSubmitting && <Loader />}
 
       {/* Theme Switcher - Fixed top right */}
       <div className="fixed top-4 right-4 z-50">
@@ -99,37 +75,40 @@ export default function Signup() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className='space-y-6'>
-            <InputField
-              label="Full Name"
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Enter your full name"
-              // The InputField component should handle the visual fixes (e.g., higher contrast border/background)
-            />
+          <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
+              <input
+                id="name"
+                type="text"
+                placeholder="Enter your full name"
+                className={`w-full px-4 py-3 rounded-lg border ${errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all`}
+                {...register('name', { required: 'Name is required' })}
+              />
+              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+            </div>
 
-            <InputField
-              label="Email"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-            />
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+              <input
+                id="email"
+                type="email"
+                placeholder="Enter your email"
+                className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all`}
+                {...register('email', { required: 'Email is required', pattern: { value: /[^@\s]+@[^@\s]+\.[^@\s]+/, message: 'Enter a valid email' } })}
+              />
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+            </div>
             
             {/* Password field with toggle (UX fix: combine password inputs) */}
             <div className='relative'>
-                <InputField
-                  label="Password"
-                  // Using showPassword state to toggle between 'password' and 'text' type
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
+                <input
+                  id="password"
                   type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
                   placeholder="Create a password"
-                  className="pr-10" // Add padding to make space for the toggle icon
+                  className={`w-full px-4 py-3 rounded-lg border ${errors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all pr-10`}
+                  {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Minimum 6 characters' } })}
                 />
                 <button 
                   type="button" 
@@ -142,21 +121,34 @@ export default function Signup() {
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </div>
                 </button>
+                {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
             </div>
 
-
-            {/* NOTE: Hidden or removed the 'Confirm Password' InputField for clean UX */}
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Confirm Password</label>
+              <input
+                id="confirmPassword"
+                type={showPassword ? "text" : "password"}
+                placeholder="Confirm password"
+                className={`w-full px-4 py-3 rounded-lg border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all`}
+                {...register('confirmPassword', {
+                  required: 'Please confirm your password',
+                  validate: (value) => value === watch('password') || 'Passwords do not match'
+                })}
+              />
+              {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>}
+            </div>
 
             {/* Updated Button Styling: Primary CTA now uses Orange theme */}
             <button 
               type="submit" 
-              disabled={loading}
+              disabled={isSubmitting}
               className="w-full mt-8 px-6 py-3 
                         bg-orange-500 hover:bg-orange-600 dark:bg-orange-500 dark:hover:bg-orange-400 
                         text-white rounded-full font-semibold shadow-lg transition-all 
                         hover:shadow-xl hover:scale-[1.01] disabled:opacity-50"
             >
-              {loading ? 'Processing...' : 'Secure Sign Up'}
+              {isSubmitting ? 'Processing...' : 'Secure Sign Up'}
             </button>
           </form>
 

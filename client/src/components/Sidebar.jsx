@@ -12,7 +12,8 @@ export default function Sidebar() {
   ];
 
   const handleLogout = () => {
-    localStorage.removeItem('isAuthenticated');
+    // TODO: Call real logout API / clear auth tokens from storage here
+    // Example: await authService.logout();
     navigate('/login');
   };
 

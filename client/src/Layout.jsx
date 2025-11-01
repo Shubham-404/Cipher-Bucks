@@ -33,7 +33,8 @@ const Layout = ({ title }) => {
                 <Loader />
             </div >
             <div className="parent  h-full w-full bg-gray-100 dark:text-white dark:bg-gray-900">
-                <Navbar isAuthenticated={true} userName="Alex" />
+                {/** TODO: Provide real isAuthenticated from auth context/provider */}
+                <Navbar isAuthenticated={false} userName={undefined} />
                 <main className="min-h-[80%] pt-22 w-full overflow-x-hidden">
                     <Outlet title={title} />
                 </main>
